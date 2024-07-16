@@ -60,6 +60,7 @@
                                 <th style="width: 18%">Date Created</th>
                                 <th>Payer Name</th>
                                 <th>Amount</th>
+{{--                               //TODO: create payment link action --}}
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -70,7 +71,7 @@
                                 <td>12/12/2024 00:00:00</td>
                                 <td>Akmal MP</td>
                                 <td>Rp. 15.000</td>
-                                <td>aw</td>
+                                <td>TODO</td>
                             </tr>
                             <tr class="align-middle">
                                 <td>32h2-yh54w-sj34438sjnr4j-23324h65747jh34nj</td>
@@ -78,7 +79,7 @@
                                 <td>12/12/2024 00:00:00</td>
                                 <td>Akmal MP</td>
                                 <td>Rp. 15.000</td>
-                                <td>aw</td>
+                                <td>TODO</td>
                             </tr>
                             <tr class="align-middle">
                                 <td>32h2-yh54w-sj34438sjnr4j-23324h65747jh34nj</td>
@@ -86,7 +87,7 @@
                                 <td>12/12/2024 00:00:00</td>
                                 <td>Akmal MP</td>
                                 <td>Rp. 15.000</td>
-                                <td>aw</td>
+                                <td>TODO</td>
                             </tr>
                             <tr class="align-middle">
                                 <td>32h2-yh54w-sj34438sjnr4j-23324h65747jh34nj</td>
@@ -94,7 +95,7 @@
                                 <td>12/12/2024 00:00:00</td>
                                 <td>Akmal MP</td>
                                 <td>Rp. 15.000</td>
-                                <td>aw</td>
+                                <td>TODO</td>
                             </tr>
                             </tbody>
                         </table>
