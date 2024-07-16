@@ -21,3 +21,5 @@ Route::get('/user/manage', function () {
 Route::get('/dashboard', fn() => view('dashboard'));
 
 Route::get('/payment-link/create', fn() => view('create-payment-link'));
+
+Route::get('/payment-link', fn() => view('payment-links'));
