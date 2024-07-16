@@ -17,3 +17,5 @@ Route::get('/profile', function () {
 Route::get('/user/manage', function () {
     return view('user.manage');
 });
+
+Route::get('/dashboard', fn() => view('dashboard'));
