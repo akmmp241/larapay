@@ -20,7 +20,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/payment-link" class="nav-link">
+                    <a href="/payment-links" class="nav-link">
                         <i class="nav-icon bi bi-link"></i>
                         <p>Payment Links</p>
                     </a>

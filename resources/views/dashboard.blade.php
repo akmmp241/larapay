@@ -88,7 +88,7 @@
             <div class="container-fluid mb-5">
                 <div class="row justify-content-between">
                     <div class="col-3">
-                        <a href="/payment-link/create" style="text-decoration: none; color: black">
+                        <a href="/payment-links/create" style="text-decoration: none; color: black">
                             <div class="small-box border border-warning border-2">
                                 <div class="inner p-4 d-flex justify-content-between align-items-center">
                                     <div>
