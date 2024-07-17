@@ -24,6 +24,9 @@ Route::get('/payment-link/create', fn() => view('create-payment-link'));
 
 Route::get('/payment-link', fn() => view('payment-links'));
 
-Route::get('/settings', fn() => view('settings.settings'));
 
-Route::get('/settings/set-xendit-api-key', fn() => view('settings.set-xendit-api-key'));
+Route::prefix('/settings')->group(function () {
+    Route::get('/', fn() => view('settings.settings'));
+    Route::get('/set-xendit-api-key', fn() => view('settings.set-xendit-api-key'));
+    Route::get('/set-default-payment-methods', fn() => view('settings.set-default-payment-methods'));
+});
