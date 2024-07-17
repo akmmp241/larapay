@@ -31,4 +31,5 @@ Route::prefix('/settings')->group(function () {
     Route::get('/', fn() => view('settings.settings'));
     Route::get('/set-xendit-api-key', fn() => view('settings.set-xendit-api-key'));
     Route::get('/set-default-payment-methods', fn() => view('settings.set-default-payment-methods'));
+    Route::get('/webhook', fn() => view('settings.set-webhook'));
 });
