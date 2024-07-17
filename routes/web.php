@@ -20,9 +20,11 @@ Route::get('/user/manage', function () {
 
 Route::get('/dashboard', fn() => view('dashboard'));
 
-Route::get('/payment-link/create', fn() => view('create-payment-link'));
+Route::prefix('/payment-link')->group(function () {
+    Route::get('/', fn() => view('payment-links'));
 
-Route::get('/payment-link', fn() => view('payment-links'));
+    Route::get('/create', fn() => view('create-payment-link'));
+});
 
 
 Route::prefix('/settings')->group(function () {
