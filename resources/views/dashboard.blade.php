@@ -88,7 +88,7 @@
             <div class="container-fluid mb-5">
                 <div class="row justify-content-between">
                     <div class="col-3">
-                        <a href="#" style="text-decoration: none; color: black">
+                        <a href="/payment-link/create" style="text-decoration: none; color: black">
                             <div class="small-box border border-warning border-2">
                                 <div class="inner p-4 d-flex justify-content-between align-items-center">
                                     <div>
@@ -102,7 +102,7 @@
                         </a>
                     </div>
                     <div class="col-3">
-                        <a href="#" style="text-decoration: none; color: black">
+                        <a href="/settings/xendit/api-key" style="text-decoration: none; color: black">
                             <div class="small-box border border-info border-2">
                                 <div class="inner p-4 d-flex justify-content-between align-items-center">
                                     <div>
@@ -116,7 +116,7 @@
                         </a>
                     </div>
                     <div class="col-3">
-                        <a href="#" style="text-decoration: none; color: black">
+                        <a href="/settings/xendit/webhook" style="text-decoration: none; color: black">
                             <div class="small-box border border-primary border-2">
                                 <div class="inner p-4 d-flex justify-content-between align-items-center">
                                     <div>
@@ -130,7 +130,7 @@
                         </a>
                     </div>
                     <div class="col-3">
-                        <a href="#" style="text-decoration: none; color: black">
+                        <a href="/settings/payment-methods" style="text-decoration: none; color: black">
                             <div class="small-box border border-success border-2">
                                 <div class="inner p-4 d-flex justify-content-between align-items-center">
                                     <div>

@@ -7,7 +7,7 @@
         </div>
         <div class="app-content">
             <div class="container-fluid mb-5">
-                <a href="#" style="text-decoration: none; color: black">
+                <a href="/settings/payment-methods" style="text-decoration: none; color: black">
                     <div class="col-4"> <!-- small box -->
                         <div class="small-box p-3 border border-dark border-2 d-flex align-items-center justify-content-between">
                             <div class="inner">
@@ -20,7 +20,7 @@
                 </a>
             </div>
             <div class="container-fluid mb-5">
-                <a href="#" style="text-decoration: none; color: black">
+                <a href="/settings/xendit/api-key" style="text-decoration: none; color: black">
                     <div class="col-4"> <!-- small box -->
                         <div class="small-box p-3 border border-dark border-2 d-flex align-items-center justify-content-between">
                             <div class="inner">
@@ -33,7 +33,7 @@
                 </a>
             </div>
             <div class="container-fluid mb-5">
-                <a href="#" style="text-decoration: none; color: black">
+                <a href="/settings/xendit/webhook" style="text-decoration: none; color: black">
                     <div class="col-4"> <!-- small box -->
                         <div class="small-box p-3 border border-dark border-2 d-flex align-items-center justify-content-between">
                             <div class="inner">
