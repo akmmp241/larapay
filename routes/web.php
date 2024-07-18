@@ -37,6 +37,7 @@ Route::prefix('/settings')->group(function () {
 
     Route::get('/payment-methods', fn() => view('settings.set-default-payment-methods'));
 
+    Route::get('/redirect', fn() => view('settings.set-default-redirect'));
 });
 
 Route::get('/checkout/transactionID', fn() => view('payment-links.checkout'));
