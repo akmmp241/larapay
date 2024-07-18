@@ -89,6 +89,11 @@
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
+                                <label for="name" class="form-label text-muted">Set Expire</label>
+                                <input type="datetime-local" class="form-control" id="name">
+                                {{--                                <div class="form-text text-danger">We'll never share your email with anyone else.</div>--}}
+                            </div>
+                            <div class="mb-3">
                                 <label for="name" class="form-label text-muted">Success Payment Redirect URL</label>
                                 <input type="text" class="form-control" id="name">
                                 {{--                                <div class="form-text text-danger">We'll never share your email with anyone else.</div>--}}
