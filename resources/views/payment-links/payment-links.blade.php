@@ -7,7 +7,7 @@
         <div class="app-content-header">
             <div class="app-content-header d-flex justify-content-between align-items-center">
                 <h1 class="mb-0">Payment Links</h1>
-                <a href="{{"/payment-link/create"}}">
+                <a href="{{"/payment-links/create"}}">
                     <button class="btn btn-lg btn-primary">
                         Create Payment Link
                     </button>
