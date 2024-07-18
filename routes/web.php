@@ -21,9 +21,9 @@ Route::get('/user/manage', function () {
 Route::get('/dashboard', fn() => view('dashboard'));
 
 Route::prefix('/payment-links')->group(function () {
-    Route::get('/', fn() => view('payment-links'));
+    Route::get('/', fn() => view('payment-links.payment-links'));
 
-    Route::get('/create', fn() => view('create-payment-link'));
+    Route::get('/create', fn() => view('payment-links.create-payment-link'));
 });
 
 
@@ -38,3 +38,5 @@ Route::prefix('/settings')->group(function () {
     Route::get('/payment-methods', fn() => view('settings.set-default-payment-methods'));
 
 });
+
+Route::get('/checkout/transactionID', fn() => view('payment-links.checkout'));
