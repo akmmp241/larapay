@@ -14,7 +14,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/user/manage" class="nav-link">
+                    <a href="/users" class="nav-link">
                         <i class="nav-icon bi bi-people-fill"></i>
                         <p>Manage Users</p>
                     </a>
