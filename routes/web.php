@@ -14,8 +14,10 @@ Route::get('/profile', function () {
     return view('auth.profile');
 });
 
-Route::get('/user/manage', function () {
-    return view('user.manage');
+Route::prefix('/users')->group(function () {
+    Route::get('/', fn() => view('users.manage'));
+    Route::get('/new', fn() => view('users.add-user'));
+    Route::get('/iduser', fn() => view('users.edit-user'));
 });
 
 Route::get('/dashboard', fn() => view('dashboard'));
