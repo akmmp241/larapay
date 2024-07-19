@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,7 +21,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('/users')->group(function () {
         Route::get('/', fn() => view('users.manage'));
-        Route::get('/new', fn() => view('users.add-user'));
+
+        Route::get('/new', [UserController::class, 'add'])->name('users.add');
+        Route::post('/new', [UserController::class, 'store'])->name('users.store');
+
         Route::get('/iduser', fn() => view('users.edit-user'));
     });
 

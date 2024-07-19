@@ -4,6 +4,12 @@
     @include('layouts.navbar')
 
     <main class="app-main p-xl-5">
+        @if(session()->has('success'))
+            <div class="alert alert-success mb-5" role="alert">
+                {{session('success') }}
+                awikwiok
+            </div>
+        @endif
         <div class="card p-3">
             <div class="card-header p-xl-4 border-0">
                 <div class="col d-flex justify-content-between">

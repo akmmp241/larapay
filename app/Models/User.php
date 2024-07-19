@@ -13,6 +13,14 @@ class User extends Authenticatable
     public static int $ADMIN = 1;
     public static int $MEMBER = 2;
 
+    public static function roles(): array
+    {
+        return [
+            "Admin" => static::$ADMIN,
+            "Member" => static::$MEMBER
+        ];
+    }
+
     protected $fillable = [
         'role_id',
         'first_name',
