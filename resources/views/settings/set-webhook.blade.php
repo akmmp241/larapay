@@ -6,6 +6,9 @@
             <h1>Webhook Settings</h1>
         </div>
         <div class="app-content">
+            <div class="col-10">
+                @include('component.alert-success')
+            </div>
             <div class="col-10 card p-2 mb-5">
                 <div class="card-header border-0">
                     <div class="row gap-2 justify-content-between align-self-center">
@@ -16,15 +19,26 @@
                 <div class="card-body">
                     <div class="row gap-2">
                         <div class="col">
-                            <div class="mb-3">
-                                <input type="text" class="form-control" placeholder="Enter your xendit webhook token">
-                                <div class="form-text text-danger">Error message</div>
-                            </div>
-                            <button class="btn btn-primary col-3">Save</button>
+                            <form action="{{route('settings.webhook.store')}}" method="post">
+                                @csrf
+                                @method('PATCH')
+                                <div class="mb-3">
+                                    <input name="token" type="text" class="form-control"
+                                           placeholder="Enter your xendit webhook token" value="{{$token ?? ''}}">
+                                    @error('token')
+                                    <div class="form-text text-danger">Error message</div>
+                                    @enderror
+                                </div>
+                                <button type="submit" name="submit" class="btn btn-primary col-3">Save</button>
+                            </form>
                         </div>
                         <div class="col">
                             <div class="mb-3">
-                                <p>Get your Xendit Verification Token from <a href="https://dashboard.xendit.co/settings/developers#webhooks">https://dashboard.xendit.co/settings/developers#webhooks.</a> This token will securing all the payments</p>
+                                <p>Get your Xendit Verification Token from
+                                    <a href="https://dashboard.xendit.co/settings/developers#webhooks">
+                                        https://dashboard.xendit.co/settings/developers#webhooks.
+                                    </a> This token will securing all the payments
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -34,7 +48,8 @@
                 <div class="card-header border-0 mb-2">
                         <h3 class="col mb-0">Webhook URLs</h3>
                         <p class="col mb-0">Set URLs on below to xendit Payment API Webhook (Payment Request). <a
-                                href="https://dashboard.xendit.co/settings/developers#webhooks">https://dashboard.xendit.co/settings/developers#webhooks</a></p>
+                                href="https://dashboard.xendit.co/settings/developers#webhooks">
+                                https://dashboard.xendit.co/settings/developers#webhooks</a></p>
                 </div>
                 <div class="card-body">
                     <div class="row align-items-center mb-4">

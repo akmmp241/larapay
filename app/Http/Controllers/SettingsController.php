@@ -26,4 +26,21 @@ class SettingsController extends Controller
             "success" => "Success change your xendit api key!"
         ]);
     }
+
+    public function setWebhook(): View
+    {
+        $token = Setting::xenditWebhookToken();
+        return view('settings.set-webhook', compact('token'));
+    }
+
+    public function storeWebhook(Request $request): RedirectResponse
+    {
+        Setting::query()->first()->update([
+            "xendit_webhook_token" => $request->get('token')
+        ]);
+
+        return Redirect::back()->with([
+            "success" => "Success change your xendit webhook token!"
+        ]);
+    }
 }
