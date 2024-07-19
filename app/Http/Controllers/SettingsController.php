@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SetRedirectRequest;
 use App\Models\Setting;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -41,6 +42,27 @@ class SettingsController extends Controller
 
         return Redirect::back()->with([
             "success" => "Success change your xendit webhook token!"
+        ]);
+    }
+
+    public function setRedirect(): View
+    {
+        $successUrl = Setting::successRedirectUrl();
+        $failedUrl = Setting::failedRedirectUrl();
+        return view('settings.set-default-redirect', compact('successUrl', 'failedUrl'));
+    }
+
+    public function storeRedirect(SetRedirectRequest $request): RedirectResponse
+    {
+        $request->validated();
+
+        Setting::query()->first()->update([
+            "payment_success_redirect_url" => $request->get('success_url'),
+            "payment_failed_redirect_url" => $request->get('failed_url')
+        ]);
+
+        return Redirect::back()->with([
+            "success" => "Success change your default redirect!"
         ]);
     }
 }

@@ -50,8 +50,8 @@
                     <div class="col-4"> <!-- small box -->
                         <div class="small-box p-3 border border-dark border-2 d-flex align-items-center justify-content-between">
                             <div class="inner">
-                                <h3>Webhook Token</h3>
-                                <p class="mb-0">Set the webhook token for security</p>
+                                <h3>Default Redirect</h3>
+                                <p class="mb-0">Set the default redirect after payment success/failed</p>
                             </div>
                             <img src="{{asset("assets/arrow-right.png")}}" width="24" height="24" alt="default payment methods">
                         </div>
