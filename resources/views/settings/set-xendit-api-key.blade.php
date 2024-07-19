@@ -6,6 +6,7 @@
             <h1>Set Xendit API Key</h1>
         </div>
         <div class="app-content">
+            @include('component.alert-success')
             <div class="card p-2">
                 <div class="card-header border-0">
                     <div class="row gap-2 justify-content-between align-self-center">
@@ -16,11 +17,18 @@
                 <div class="card-body">
                     <div class="row gap-2">
                         <div class="col">
-                            <div class="mb-3">
-                                <input type="text" class="form-control" placeholder="Enter your xendit api key">
-                                <div class="form-text text-danger">Error message</div>
-                            </div>
-                            <button class="btn btn-primary col-3">Save</button>
+                            <form action="{{route("settings.api-key.store")}}" method="post">
+                                @csrf
+                                @method('PATCH')
+                                <div class="mb-3">
+                                    <input name="key" type="text" class="form-control" value="{{$key ?? ''}}"
+                                           placeholder="Enter your xendit api key">
+                                    @error('key')
+                                    <div class="form-text text-danger">Error message</div>
+                                    @enderror
+                                </div>
+                                <button type="submit" name="submit" class="btn btn-primary col-3">Save</button>
+                            </form>
                         </div>
                         <div class="col">
                             <div class="mb-3">

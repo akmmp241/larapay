@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('settings', function (Blueprint $table) {
-            $table->string("xendit_mode", 15)->nullable()->default(null);
-            $table->string("xendit_api_key", 200)->nullable()->default(null);
-            $table->string("xendit_webhook_token", 200)->nullable()->default(null);
-            $table->json("default_payment_method")->nullable()->default(null);
-            $table->string("payment_success_redirect_url", 200)->nullable()->default(null);
-            $table->string("payment_failed_redirect_url", 200)->nullable()->default(null);
+            $table->string("xendit_mode", 15)->nullable();
+            $table->string("xendit_api_key", 200)->nullable();
+            $table->string("xendit_webhook_token", 200)->nullable();
+            $table->json("default_payment_method")->nullable();
+            $table->string("payment_success_redirect_url", 200)->nullable();
+            $table->string("payment_failed_redirect_url", 200)->nullable();
         });
     }
 
