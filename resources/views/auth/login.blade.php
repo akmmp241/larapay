@@ -32,22 +32,27 @@
             <p>Enter your email and password to login</p>
         </div>
         <div class="card-body login-card-body">
-            <form action="../index3.html" method="post" class="d-grid gap-5">
+            <form action="{{route('login')}}" method="post" class="d-grid gap-5">
+                @csrf
                 <div class="d-grid gap-2">
                     <div>
                         <div class="input-group mb-1">
                             <div class="form-floating">
-                                <input id="loginEmail" type="email" class="form-control" value="" placeholder=""/>
+                                <input id="loginEmail" name="email" type="email" class="form-control"
+                                       value="{{old('email')}}" required/>
                                 <label for="loginEmail">Email</label>
                             </div>
                             <div class="input-group-text"><span class="bi bi-envelope"></span></div>
                         </div>
                     </div>
-{{--                    <p class="text-danger mb-1">The credentials is not match</p>--}}
+                    @error('not-found')
+                    <p class="text-danger mb-1">{{$message}}</p>
+                    @enderror
                     <div>
                         <div class="input-group mb-1">
                             <div class="form-floating">
-                                <input id="loginPassword" type="password" class="form-control" placeholder=""/>
+                                <input id="loginPassword" name="password" type="password" class="form-control"
+                                       value="{{old('password')}}" placeholder="" required/>
                                 <label for="loginPassword">Password</label>
                             </div>
                             <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
@@ -55,7 +60,7 @@
                     </div>
                 </div>
                 <div class="mb-1">
-                    <button type="submit" class="btn btn-primary w-100">Log In</button>
+                    <button type="submit" name="submit" class="btn btn-primary w-100">Log In</button>
                 </div>
             </form>
             <p class="mb-1 text-center mt-3">Forget your password? Reset your password <a href="forgot-password.html">here</a></p>
