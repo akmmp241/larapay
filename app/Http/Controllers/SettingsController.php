@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Redirect;
 
 class SettingsController extends Controller
 {
+    public function settings(): View
+    {
+        return view('settings.settings');
+    }
     public function setApiKey(): View
     {
         $key = Setting::xenditApiKey();

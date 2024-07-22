@@ -53,11 +53,11 @@ class Setting extends Model
 
     public static function successRedirectUrl(): ?string
     {
-        return self::query()->first()->success_redirect_url;
+        return self::query()->first()->payment_success_redirect_url;
     }
 
     public static function failedRedirectUrl(): ?string
     {
-        return self::query()->first()->failed_redirect_url;
+        return self::query()->first()->payment_failed_redirect_url;
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Helpers;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Models\User;
 use App\Rules\DuplicateEmail;
@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
+    public function dashboard(): View
+    {
+        return view('dashboard');
+    }
+
     public function add(): View
     {
         return view('users.add-user', [
