@@ -16,7 +16,7 @@
         </div>
         <div class="app-content">
             <div class="container-fluid">
-                <div class="card" style="min-height: 600px">
+                <div class="card mb-4" style="min-height: 600px">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center gap-5">
@@ -116,6 +116,8 @@
                         </table>
                     </div>
                 </div>
+                @include('component.alert-success')
             </div>
+        </div>
     </main>
 @endsection

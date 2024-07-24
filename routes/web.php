@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckUndoneSettingsMiddleware;
@@ -43,12 +44,15 @@ Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(functio
 
 
     // Payment links routes
-    Route::prefix('/payment-links')->group(function () {
-        // TODO
-        Route::get('/', fn() => view('payment-links.payment-links'));
+    Route::controller(PaymentController::class)->group(function () {
+        Route::prefix('/payment-links')->group(function () {
+            Route::get('/', 'paymentLinks')->name('payment-links');
 
+            Route::get('/create', 'create')->name('payment-links.create');
+            Route::post('/create', 'store')->name('payment-links.store');
+        });
         // TODO
-        Route::get('/create', fn() => view('payment-links.create-payment-link'));
+        Route::get('/checkout/{referenceId}', 'checkout')->name('payment-links.checkout');
     });
 
 
@@ -71,7 +75,6 @@ Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(functio
         Route::patch('/redirect', 'storeRedirect')->name('settings.redirect.store');
     });
 
-    // TODO
-    Route::get('/checkout/transactionID', fn() => view('payment-links.checkout'));
-
 });
+
+Route::post('/charge', [PaymentController::class, 'charge'])->name('charge');

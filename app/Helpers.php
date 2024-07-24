@@ -3,9 +3,19 @@
 namespace App;
 
 use App\Models\Setting;
+use Xendit\PaymentMethod\EWalletChannelCode;
 
 trait Helpers
 {
+    static array $NORMALISE_NAME = [
+        EWalletChannelCode::OVO => "Ovo",
+        EWalletChannelCode::DANA => "Dana",
+        EWalletChannelCode::LINKAJA => "LinkAja",
+        EWalletChannelCode::ASTRAPAY => "AstraPay",
+        EWalletChannelCode::JENIUSPAY => "JeniusPay",
+        EWalletChannelCode::SHOPEEPAY => "ShopeePay",
+    ];
+
     public function checkUndoneSettings(): array
     {
         $needToSet = [];
@@ -18,7 +28,7 @@ trait Helpers
         $countSettings = count($needToSet);
 
         return [
-            "isDone" => $countSettings > 0,
+            "isDone" => $countSettings === 0,
             "settings" => $needToSet
         ];
     }
