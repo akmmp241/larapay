@@ -18,7 +18,6 @@ class CreateUserRequest extends FormRequest
         return [
             "first_name" => ["required", "string"],
             "last_name" => ["nullable", "string"],
-            "username" => ["required", "string", "min:3", "max:15"],
             "email" => ["required", "email"],
             "role_id" => ["required", "string"],
             "password" => ["required", Password::min(8)],
@@ -28,8 +27,6 @@ class CreateUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            "username.min" => ':attribute minimal 3 karakter',
-            "username.max" => ':attribute maksimal 15 karakter',
             "password" => ':attribute minimal 3 karakter dan mengandung huruf besar, kecil dan angka',
         ];
     }

@@ -31,8 +31,6 @@ class UserController extends Controller
 
         // check for duplicate
         $request->validate([
-            // check duplicate username
-            new DuplicateUsername(),
             // check duplicate email
             new DuplicateEmail(),
         ]);

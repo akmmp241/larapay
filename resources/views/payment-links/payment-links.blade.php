@@ -90,7 +90,7 @@
                                     <td>{{$paymentLink->amount}}</td>
                                     <td class="d-flex flex-row gap-2">
                                         <a href="#">
-                                            <button type="button" class="btn btn-danger btn-sm">Cancel</button>
+                                            <button type="button" class="btn btn-primary btn-sm">Pay URL</button>
                                         </a>
                                     </td>
                                 </tr>

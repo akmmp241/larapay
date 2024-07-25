@@ -7,7 +7,6 @@
         @if(session()->has('success'))
             <div class="alert alert-success mb-5" role="alert">
                 {{session('success') }}
-                awikwiok
             </div>
         @endif
         <div class="card p-3">
