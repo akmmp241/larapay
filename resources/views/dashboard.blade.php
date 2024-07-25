@@ -53,14 +53,14 @@
                     <div class="col-6">
                         <div class="card mb-4">
                             <div class="card-header">
-                                <h3 class="card-title">Payment links</h3>
+                                <h3 class="card-title">5 Latest Payment Links</h3>
                             </div>
                             <div class="card-body">
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
                                         <th>Status</th>
-                                        <th>Date</th>
+                                        <th>Date Created</th>
                                         <th>ID</th>
                                         <th>Amount</th>
                                     </tr>
@@ -146,16 +146,24 @@
                 </div>
             </div>
         </div>
-
         <!-- apexcharts -->
         <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"
                 integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="
                 crossorigin="anonymous"></script> <!-- ChartJS -->
         <script>
+            const formatRP = (number) => {
+                return new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    maximumFractionDigits: 0
+                }).format(number);
+            }
+
             const options = {
                 series: [{
                     name: "Money in",
-                    data: [200_000_000, 46_000_000, 112_000_000, 79_000_000, 134_000_000]
+                    data: [200000000, 46_000_000, 112_000_000, 79_000_000, 134_000_000],
+                    display: ["test", "test", "test", "test", "test"]
                 }],
                 chart: {
                     height: 300,
@@ -165,7 +173,7 @@
                     }
                 },
                 dataLabels: {
-                    enabled: false
+                    enabled: false,
                 },
                 stroke: {
                     curve: 'straight'
@@ -182,6 +190,14 @@
                 },
                 xaxis: {
                     categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'],
+                },
+                yaxis: {
+                    labels: {
+                        show: true,
+                        formatter: (value) => {
+                            return formatRP(value)
+                        }
+                    }
                 }
             };
 
