@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ChargeRequest;
 use App\Http\Requests\CreatePaymentLinkRequest;
+use App\Http\Requests\GetPaymentLinksRequest;
 use App\Http\Requests\ValidateOtpRequest;
 use App\Mail\NewOrderMail;
 use App\Models\PaymentLink;
@@ -11,11 +12,8 @@ use App\Models\Setting;
 use App\Services\ChargeService;
 use App\Services\PaymentRequestService;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
@@ -24,10 +22,7 @@ use Symfony\Component\CssSelector\Exception\InternalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Xendit\PaymentMethod\DirectDebitChannelCode;
 use Xendit\PaymentMethod\EWalletChannelCode;
-use Xendit\PaymentMethod\PaymentMethodAction;
 use Xendit\PaymentMethod\PaymentMethodType;
-use Xendit\PaymentRequest\PaymentRequestAction;
-use Xendit\PaymentRequest\PaymentRequestApi;
 use Xendit\PaymentRequest\PaymentRequestStatus;
 use Xendit\XenditSdkException;
 
@@ -42,9 +37,21 @@ class PaymentController extends Controller
         $this->paymentRequestService = new PaymentRequestService();
     }
 
-    public function paymentLinks(): View
+    public function paymentLinks(GetPaymentLinksRequest $request): View
     {
-        return view('payment-links.payment-links');
+        $paymentLink = PaymentLink::query();
+
+        if ($request->get('from_date') !== null && $request->get('to_date') !== null)
+            $paymentLink->whereBetween('created_at', [$request->get('from_date'), $request->get('to_date')]);
+
+        if ($request->get('status') !== null) $paymentLink->where('status', $request->get('status'));
+
+        if ($request->get('search') !== null)
+            $paymentLink->where($request->get('search_by') ?? 'id', 'like', '%' . $request->get('search') . '%');
+
+        $paymentLinks = $paymentLink->get();
+
+        return view('payment-links.payment-links', compact('paymentLinks'));
     }
 
     public function create(): View

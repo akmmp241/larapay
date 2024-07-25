@@ -18,38 +18,49 @@
             <div class="container-fluid">
                 <div class="card mb-4" style="min-height: 600px">
                     <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center gap-5">
-                                <div class="d-flex gap-2 align-items-center">
-                                    <div>
-                                        <label for="reference-id" class="form-label text-muted mb-0">From date</label>
-                                        <input type="date" class="form-control border border-2"
-                                               id="reference-id">
+                        <form action="{{route('payment-links')}}" method="get">
+
+                            <div class="d-flex justify-content-between align-items-center ">
+                                <div class="d-flex align-items-center gap-5">
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <div>
+                                            <label for="from_date" class="form-label text-muted mb-0">From date</label>
+                                            <input type="date" name="from_date" class="form-control border border-2"
+                                                   id="from_date">
+                                        </div>
+                                        <div class="mt-4">
+                                            <h2>-</h2>
+                                        </div>
+                                        <div>
+                                            <label for="to_date" class="form-label text-muted mb-0">To date</label>
+                                            <input type="date" name="to_date" class="form-control border border-2"
+                                                   id="to_date">
+                                        </div>
                                     </div>
-                                    <div class="mt-4">
-                                        <h2>-</h2>
-                                    </div>
-                                    <div>
-                                        <label for="reference-id" class="form-label text-muted mb-0">To date</label>
-                                        <input type="date" class="form-control border border-2"
-                                               id="reference-id">
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <div>
+                                            <label for="status" class="form-label text-muted mb-0">Status</label>
+                                            <select name="status" class="form-control form-select" id="status">
+                                                <option value="">Choose Status</option>
+                                                <option value="PENDING">Pending</option>
+                                                <option value="PAID">Paid</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="d-flex gap-2 align-items-center">
-                                    <div>
-                                        <label for="role" class="form-label text-muted mb-0">Role</label>
-                                        <select class="form-control form-select" id="role" required>
-                                            <option value="">Choose Role</option>
-                                            <option value="">Admin</option>
-                                            <option value="">member</option>
-                                        </select>
-                                    </div>
+                                <div class="d-flex gap-5 col-5">
+                                    <select name="search_by" class="col form-control form-select" id="search-by">
+                                        <option value="">Search By</option>
+                                        <option value="id">Reference ID</option>
+                                        <option value="payer_name">Payer Name</option>
+                                        <option value="created_at">Created At</option>
+                                        <option value="amount">Amount</option>
+                                    </select>
+                                    <input type="search" name="search" placeholder="search..." class="col form-control">
+                                    <button type="submit" class="col-2 btn btn-primary">Apply</button>
                                 </div>
                             </div>
-                            <div>
-                                <input type="text" placeholder="search..." class="form-control">
-                            </div>
-                        </div>
+                        </form>
                     </div>
                     <div class="card-body">
                         <table class="table">
@@ -64,54 +75,26 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr class="align-middle">
-                                <td>32h2-yh54w-sj34438sjnr4j-23324h65747jh34nj</td>
-                                <td><span class="badge text-bg-primary">Paid</span></td>
-                                <td>12/12/2024 00:00:00</td>
-                                <td>Akmal MP</td>
-                                <td>Rp. 15.000</td>
-                                <td class="d-flex flex-row gap-2">
-                                    <a href="#">
-                                        <button type="button" class="btn btn-danger btn-sm">Cancel</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr class="align-middle">
-                                <td>32h2-yh54w-sj34438sjnr4j-23324h65747jh34nj</td>
-                                <td><span class="badge text-bg-primary">Paid</span></td>
-                                <td>12/12/2024 00:00:00</td>
-                                <td>Akmal MP</td>
-                                <td>Rp. 15.000</td>
-                                <td class="d-flex flex-row gap-2">
-                                    <a href="#">
-                                        <button type="button" class="btn btn-danger btn-sm">Cancel</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr class="align-middle">
-                                <td>32h2-yh54w-sj34438sjnr4j-23324h65747jh34nj</td>
-                                <td><span class="badge text-bg-primary">Paid</span></td>
-                                <td>12/12/2024 00:00:00</td>
-                                <td>Akmal MP</td>
-                                <td>Rp. 15.000</td>
-                                <td class="d-flex flex-row gap-2">
-                                    <a href="#">
-                                        <button type="button" class="btn btn-danger btn-sm">Cancel</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr class="align-middle">
-                                <td>32h2-yh54w-sj34438sjnr4j-23324h65747jh34nj</td>
-                                <td><span class="badge text-bg-success">Settled</span></td>
-                                <td>12/12/2024 00:00:00</td>
-                                <td>Akmal MP</td>
-                                <td>Rp. 15.000</td>
-                                <td class="d-flex flex-row gap-2">
-                                    <a href="#">
-                                        <button type="button" class="btn btn-danger btn-sm">Cancel</button>
-                                    </a>
-                                </td>
-                            </tr>
+                            @foreach($paymentLinks as $paymentLink)
+                                <tr class="align-middle">
+                                    <td>{{$paymentLink->id}}</td>
+                                    <td>
+                                        @if($paymentLink->status === "PAID")
+                                            <span class="badge text-bg-primary">{{$paymentLink->status}}</span>
+                                        @elseif($paymentLink->status === "PENDING")
+                                            <span class="badge text-bg-warning">{{$paymentLink->status}}</span>
+                                        @endif
+                                    </td>
+                                    <td>{{$paymentLink->created_at}}</td>
+                                    <td>{{$paymentLink->payer_name}}</td>
+                                    <td>{{$paymentLink->amount}}</td>
+                                    <td class="d-flex flex-row gap-2">
+                                        <a href="#">
+                                            <button type="button" class="btn btn-danger btn-sm">Cancel</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
