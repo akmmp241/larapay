@@ -56,6 +56,9 @@ Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(functio
         // TODO
         Route::get('/checkout/{referenceId}', 'checkout')->name('payment-links.checkout');
         Route::post('/charge', 'charge')->name('charge');
+        Route::post('/validate/otp', 'validateOtp')
+            ->withoutMiddleware(['auth', CheckUndoneSettingsMiddleware::class])
+            ->name('validate.otp');
     });
 
 

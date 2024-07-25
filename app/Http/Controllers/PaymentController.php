@@ -4,30 +4,42 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ChargeRequest;
 use App\Http\Requests\CreatePaymentLinkRequest;
+use App\Http\Requests\ValidateOtpRequest;
 use App\Mail\NewOrderMail;
 use App\Models\PaymentLink;
 use App\Models\Setting;
 use App\Services\ChargeService;
+use App\Services\PaymentRequestService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Xendit\PaymentMethod\DirectDebitChannelCode;
+use Xendit\PaymentMethod\EWalletChannelCode;
+use Xendit\PaymentMethod\PaymentMethodAction;
 use Xendit\PaymentMethod\PaymentMethodType;
+use Xendit\PaymentRequest\PaymentRequestAction;
+use Xendit\PaymentRequest\PaymentRequestApi;
 use Xendit\PaymentRequest\PaymentRequestStatus;
 use Xendit\XenditSdkException;
 
 class PaymentController extends Controller
 {
     private ChargeService $chargeService;
+    private PaymentRequestService $paymentRequestService;
 
     public function __construct()
     {
         $this->chargeService = new ChargeService();
+        $this->paymentRequestService = new PaymentRequestService();
     }
 
     public function paymentLinks(): View
@@ -78,7 +90,8 @@ class PaymentController extends Controller
     {
         $paymentLink = PaymentLink::query()->findOrFail($transactionId);
         $ovo = view('payment-links.components.ovo', compact('paymentLink'));
-        return view('payment-links.checkout', compact('paymentLink', 'ovo'));
+        $bri_dd = view('payment-links.components.bri-dd', compact('paymentLink'));
+        return view('payment-links.checkout', compact('paymentLink', 'ovo', 'bri_dd'));
     }
 
     public function charge(ChargeRequest $request): RedirectResponse
@@ -100,7 +113,17 @@ class PaymentController extends Controller
 
         // If response REQUIRES_ACTION then redirect to the url action.
         if ($response->getStatus() == PaymentRequestStatus::REQUIRES_ACTION) {
-            return Redirect::to($response->getActions()[0]["url"]);
+            // Handle OVO action
+            if ($requests["channel_code"] === EWalletChannelCode::OVO)
+                return Redirect::to($response->getActions()[0]["url"]);
+
+            // Handle BRI Direct Debit action
+            if (explode("_", $requests["channel_code"])[0] === DirectDebitChannelCode::BRI)
+                return Redirect::back()->with([
+                    'otp-bri' => view('payment-links.components.bri-dd-otp', [
+                        "pr_id" => $response->getId()
+                    ])->render()
+                ]);
         }
 
         // If response PENDING process the response
@@ -138,5 +161,20 @@ class PaymentController extends Controller
         }
 
         return Redirect::back();
+    }
+
+    /**
+     * @throws InternalErrorException
+     */
+    public function validateOtp(ValidateOtpRequest $request): RedirectResponse
+    {
+        $requests = $request->validated();
+        $pr = $this->paymentRequestService->get($requests["pr_id"]);
+        $prAction = $pr->getActions()[0];
+        $paymentLink = PaymentLink::query()->where('id', $pr->getReferenceId())->first();
+
+        $this->paymentRequestService->validateOtp($prAction, $requests["otp"]);
+
+        return Redirect::to($paymentLink->success_payment_redirect ?? Setting::successRedirectUrl());
     }
 }

@@ -20,9 +20,6 @@
 </script>
 
 <main class="app-main col-8 mx-auto">
-    <form action="/charge" method="post">
-        @csrf
-        <input type="hidden" name="id" value="{{$paymentLink->id}}">
         <div class="app-content p-4 row">
             <div class="col">
                 <div class="d-flex align-items-center gap-4 mb-5">
@@ -33,202 +30,248 @@
                     <h1 id="amount" class="mb-0 text-primary-emphasis">IDR </h1>
                     <p id="expire-date" class="text-info-emphasis">BAYAR SEBELUM</p>
                 </div>
-                {!! $ovo !!}
-                @if(session()->has('success-page-ovo'))
-                    @include('payment-links.components.' . session('success-page-ovo'))
+                @if(session()->has('otp-bri'))
+                    {!! session('otp-bri') !!}
                 @endif
-                @if(session()->has('success-page-bank'))
-                    {!! session('success-page-bank') !!}
-                @endif
-                @if(session()->has('success-page-qrcode'))
-                    {!! session('success-page-qrcode') !!}
-                @endif
-                <div id="payment-methods" class="d-flex justify-content-center mb-5">
-                    <div class="accordion col" id="accordionExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseThree" aria-expanded="true"
-                                        aria-controls="collapseThree">
-                                    <i class="bi bi-phone"></i>&nbsp;
-                                    E-Wallet
-                                </button>
-                            </h2>
-                            <div id="collapseThree" class="accordion-collapse collapse show"
-                                 aria-labelledby="headingThree"
-                                 data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div class="row gap-4 mx-auto">
-                                        <div style="width: 30%;" class="card">
-                                            <button type="submit" name="channel_code" value="DANA"
-                                                    class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
-                                                    style="cursor: pointer;">
-                                                <img src="{{asset('assets/dana.webp')}}" alt="dana" width="120">
-                                            </button>
-                                        </div>
-                                        <div style="width: 30%;" class="card">
-                                            <button type="submit" name="channel_code" value="SHOPEEPAY"
-                                                    class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
-                                                    style="cursor: pointer;">
-                                                <img src="{{asset('assets/shopeepay.png')}}" alt="shopeepay" width="80">
-                                            </button>
-                                        </div>
-                                        <div style="width: 30%;" class="card">
-                                            <button type="button" id="ovo"
-                                                    class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
-                                                    style="cursor: pointer;">
-                                                <img src="{{asset('assets/ovo.png')}}" alt="ovo" width="25">
-                                            </button>
-                                        </div>
-                                        <div style="width: 30%;" class="card">
-                                            <button type="submit" name="channel_code" value="LINKAJA"
-                                                    class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
-                                                    style="cursor: pointer;">
-                                                <img src="{{asset('assets/linkaja.png')}}" alt="linkaja" width="30">
-                                            </button>
-                                        </div>
-                                        <div style="width: 30%;" class="card">
-                                            <button type="submit" name="channel_code" value="ASTRAPAY"
-                                                    class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
-                                                    style="cursor: pointer;">
-                                                <img src="{{asset('assets/astrapay.png')}}" alt="astrapay" width="40">
-                                            </button>
-                                        </div>
-                                        <div style="width: 30%;" class="card">
-                                            <button type="submit" name="channel_code" value="JENIUSPAY"
-                                                    class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
-                                                    style="cursor: pointer;">
-                                                <img src="{{asset('assets/jenius.png')}}" alt="jeniuspay" width="60">
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    <i class="bi bi-bank2"></i>&nbsp;
-                                    Virtual Account
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                                 data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div class="row gap-4 mx-auto">
-                                        <div style="width: 30%;" class="card">
-                                            <button type="submit" name="channel_code" value="BCA"
-                                                    class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
-                                                    style="cursor: pointer;">
-                                                <img src="{{asset('assets/bca.png')}}" alt="dana" width="80">
-                                            </button>
-                                        </div>
-                                        <div style="width: 30%;" class="card">
-                                            <button type="submit" name="channel_code" value="MANDIRI"
-                                                    class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
-                                                    style="cursor: pointer;">
-                                                <img src="{{asset('assets/mandiri.png')}}" alt="dana" width="100">
-                                            </button>
-                                        </div>
-                                        <div style="width: 30%;" class="card">
-                                            <button type="submit" name="channel_code" value="BRI"
-                                                    class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
-                                                    style="cursor: pointer;">
-                                                <img src="{{asset('assets/bri.png')}}" alt="dana" width="50">
-                                            </button>
-                                        </div>
-                                        <div style="width: 30%;" class="card">
-                                            <button type="submit" name="channel_code" value="BSI"
-                                                    class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
-                                                    style="cursor: pointer;">
-                                                <img src="{{asset('assets/bsi.png')}}" alt="dana" width="100">
-                                            </button>
-                                        </div>
-                                        <div style="width: 30%;" class="card">
-                                            <button type="submit" name="channel_code" value="BNI"
-                                                    class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
-                                                    style="cursor: pointer;">
-                                                <img src="{{asset('assets/bni.png')}}" alt="dana" width="80">
-                                            </button>
-                                        </div>
-                                        <div style="width: 30%;" class="card">
-                                            <button type="submit" name="channel_code" value="BJB"
-                                                    class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
-                                                    style="cursor: pointer;">
-                                                <img src="{{asset('assets/bjb.png')}}" alt="dana" width="80">
-                                            </button>
-                                        </div>
-                                        <div style="width: 30%;" class="card">
-                                            <button type="submit" name="channel_code" value="CIMB"
-                                                    class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
-                                                    style="cursor: pointer;">
-                                                <img src="{{asset('assets/cimb.png')}}" alt="cimb" width=80">
-                                            </button>
-                                        </div>
-                                        <div style="width: 30%;" class="card">
-                                            <button type="submit" name="channel_code" value="PERMATA"
-                                                    class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
-                                                    style="cursor: pointer;">
-                                                <img src="{{asset('assets/permata.png')}}" alt="permata" width="80">
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingRO">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseRO" aria-expanded="false" aria-controls="collapseRO">
-                                    <i class="bi bi-shop"></i>&nbsp;
-                                    Retail Outlet
-                                </button>
-                            </h2>
-                            <div id="collapseRO" class="accordion-collapse collapse" aria-labelledby="headingRO"
-                                 data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div class="row gap-4 mx-auto">
-                                        <div style="width: 30%;" class="card">
-                                            <div class="card-body">
-                                                Indomaret
+                <form action="/charge" method="post">
+                    @csrf
+                    <input type="hidden" name="id" value="{{$paymentLink->id}}">
+                    {!! $ovo !!}
+                    {!! $bri_dd !!}
+                    @if(session()->has('success-page-ovo'))
+                        @include('payment-links.components.' . session('success-page-ovo'))
+                    @endif
+                    @if(session()->has('success-page-bank'))
+                        {!! session('success-page-bank') !!}
+                    @endif
+                    @if(session()->has('success-page-qrcode'))
+                        {!! session('success-page-qrcode') !!}
+                    @endif
+                    <div id="payment-methods" class="d-flex justify-content-center mb-5">
+                        <div class="accordion col" id="accordionExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseThree" aria-expanded="true"
+                                            aria-controls="collapseThree">
+                                        <i class="bi bi-phone"></i>&nbsp;
+                                        E-Wallet
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse show"
+                                     aria-labelledby="headingThree"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="row gap-4 mx-auto">
+                                            <div style="width: 30%;" class="card">
+                                                <button type="submit" name="channel_code" value="DANA"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/dana.webp')}}" alt="dana" width="120">
+                                                </button>
                                             </div>
-                                        </div>
-                                        <div style="width: 30%;" class="card">
-                                            <div class="card-body">
-                                                Alfamart
+                                            <div style="width: 30%;" class="card">
+                                                <button type="submit" name="channel_code" value="SHOPEEPAY"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/shopeepay.png')}}" alt="shopeepay"
+                                                         width="80">
+                                                </button>
+                                            </div>
+                                            <div style="width: 30%;" class="card">
+                                                <button type="button" id="ovo"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/ovo.png')}}" alt="ovo" width="25">
+                                                </button>
+                                            </div>
+                                            <div style="width: 30%;" class="card">
+                                                <button type="submit" name="channel_code" value="LINKAJA"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/linkaja.png')}}" alt="linkaja" width="30">
+                                                </button>
+                                            </div>
+                                            <div style="width: 30%;" class="card">
+                                                <button type="submit" name="channel_code" value="ASTRAPAY"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/astrapay.png')}}" alt="astrapay"
+                                                         width="40">
+                                                </button>
+                                            </div>
+                                            <div style="width: 30%;" class="card">
+                                                <button type="submit" name="channel_code" value="JENIUSPAY"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/jenius.png')}}" alt="jeniuspay"
+                                                         width="60">
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingFour">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseFour" aria-expanded="false"
-                                        aria-controls="collapseFour">
-                                    <i class="bi bi-qr-code-scan"></i>&nbsp;
-                                    QR Payments
-                                </button>
-                            </h2>
-                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingOne"
-                                 data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div class="row gap-4 mx-auto">
-                                        <div style="width: 30%;" class="card">
-                                            <button type="submit" name="channel_code" value="QRIS"
-                                                    class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
-                                                    style="cursor: pointer;">
-                                                <img src="{{asset('assets/qris.png')}}" alt="qris" width="80">
-                                            </button>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseTwo" aria-expanded="false"
+                                            aria-controls="collapseTwo">
+                                        <i class="bi bi-bank2"></i>&nbsp;
+                                        Virtual Account
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="row gap-4 mx-auto">
+                                            <div style="width: 30%;" class="card">
+                                                <button type="submit" name="channel_code" value="BCA"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/bca.png')}}" alt="dana" width="80">
+                                                </button>
+                                            </div>
+                                            <div style="width: 30%;" class="card">
+                                                <button type="submit" name="channel_code" value="MANDIRI"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/mandiri.png')}}" alt="dana" width="100">
+                                                </button>
+                                            </div>
+                                            <div style="width: 30%;" class="card">
+                                                <button type="submit" name="channel_code" value="BRI"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/bri.png')}}" alt="dana" width="50">
+                                                </button>
+                                            </div>
+                                            <div style="width: 30%;" class="card">
+                                                <button type="submit" name="channel_code" value="BSI"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/bsi.png')}}" alt="dana" width="100">
+                                                </button>
+                                            </div>
+                                            <div style="width: 30%;" class="card">
+                                                <button type="submit" name="channel_code" value="BNI"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/bni.png')}}" alt="dana" width="80">
+                                                </button>
+                                            </div>
+                                            <div style="width: 30%;" class="card">
+                                                <button type="submit" name="channel_code" value="BJB"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/bjb.png')}}" alt="dana" width="80">
+                                                </button>
+                                            </div>
+                                            <div style="width: 30%;" class="card">
+                                                <button type="submit" name="channel_code" value="CIMB"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/cimb.png')}}" alt="cimb" width=80">
+                                                </button>
+                                            </div>
+                                            <div style="width: 30%;" class="card">
+                                                <button type="submit" name="channel_code" value="PERMATA"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/permata.png')}}" alt="permata" width="80">
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingRO">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseRO" aria-expanded="false"
+                                            aria-controls="collapseRO">
+                                        <i class="bi bi-shop"></i>&nbsp;
+                                        Retail Outlet
+                                    </button>
+                                </h2>
+                                <div id="collapseRO" class="accordion-collapse collapse" aria-labelledby="headingRO"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="row gap-4 mx-auto">
+                                            <div style="width: 30%;" class="card">
+                                                <div class="card-body">
+                                                    Indomaret
+                                                </div>
+                                            </div>
+                                            <div style="width: 30%;" class="card">
+                                                <div class="card-body">
+                                                    Alfamart
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFour">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseFour" aria-expanded="false"
+                                            aria-controls="collapseFour">
+                                        <i class="bi bi-qr-code-scan"></i>&nbsp;
+                                        QR Payments
+                                    </button>
+                                </h2>
+                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="row gap-4 mx-auto">
+                                            <div style="width: 30%;" class="card">
+                                                <button type="submit" name="channel_code" value="QRIS"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/qris.png')}}" alt="qris" width="80">
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFive">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseFive" aria-expanded="false"
+                                            aria-controls="collapseFive">
+                                        <i class="bi bi-bank"></i>&nbsp;
+                                        Direct Debit
+                                    </button>
+                                </h2>
+                                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="row gap-4 mx-auto">
+                                            <div style="width: 30%;" class="card">
+                                                <button type="button" id="bri-dd"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/bri.png')}}" alt="bri-dd" width="40">
+                                                </button>
+                                            </div>
+                                            <div style="width: 30%;" class="card">
+                                                <button type="submit" name="channel_code" value="MANDIRI_DD"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <img src="{{asset('assets/mandiri.png')}}"
+                                                         alt="mandiri direct debit"
+                                                         width="80">
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="col-4">
                 <div class="d-flex align-items-center gap-4 mb-5">
@@ -256,7 +299,6 @@
                 @include('component.alert-error')
             </div>
         </div>
-    </form>
 </main>
 
 
@@ -264,10 +306,13 @@
     let successPageOvo = document.getElementById('success-page-ovo')
     let successPageBank = document.getElementById('success-page-bank')
     let successPageQrcode = document.getElementById('success-page-qrcode')
+    let otpPageBri = document.getElementById('form-bri-otp')
 
     if (successPageOvo !== null) document.getElementById('payment-methods').classList.add('visually-hidden')
     if (successPageBank !== null) document.getElementById('payment-methods').classList.add('visually-hidden')
     if (successPageQrcode !== null) document.getElementById('payment-methods').classList.add('visually-hidden')
+    if (successPageQrcode !== null) document.getElementById('payment-methods').classList.add('visually-hidden')
+    if (otpPageBri !== null) document.getElementById('payment-methods').classList.add('visually-hidden')
 
     document.getElementById('amount').innerText = 'IDR ' + rpFormat
     document.getElementById('expire-date').innerText = 'BAYAR SEBELUM ' + dateIndoFormat
@@ -281,12 +326,19 @@
         document.getElementById('payment-methods').classList.add('visually-hidden')
         document.getElementById('ovo-required').setAttribute('required', true)
     }
+    document.getElementById('bri-dd').onclick = () => {
+        document.getElementById('form-bri-dd').classList.remove('visually-hidden')
+        document.getElementById('payment-methods').classList.add('visually-hidden')
+        document.getElementById('bri-dd-mobile').setAttribute('required', true)
+        document.getElementById('bri-dd-email').setAttribute('required', true)
+        document.getElementById('bri-dd-card').setAttribute('required', true)
+    }
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.3.0/browser/overlayscrollbars.browser.es6.min.js"
         integrity="sha256-H2VM7BKda+v2Z4+DRy69uknwxjyDRhszjXFhsL4gD3w="
         crossorigin="anonymous"></script> <!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+<script src="https://cdn.js delivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha256-whL0tQWoY1Ku1iskqPFvmZ+CHsvmRWx/PIoEvIeWh4I="
         crossorigin="anonymous"></script> <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Xendit\PaymentMethod\PaymentMethodAction;
 use Xendit\PaymentRequest\Error;
 use Xendit\PaymentRequest\PaymentCallbackData;
 

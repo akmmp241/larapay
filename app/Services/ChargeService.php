@@ -5,15 +5,15 @@ namespace App\Services;
 use App\Helpers;
 use App\Models\PaymentLink;
 use App\Models\Setting;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
+use Xendit\PaymentMethod\DirectDebitChannelCode;
 use Xendit\PaymentMethod\EWalletChannelCode;
 use Xendit\PaymentMethod\PaymentMethodReusability;
 use Xendit\PaymentMethod\PaymentMethodType;
 use Xendit\PaymentMethod\QRCodeChannelCode;
 use Xendit\PaymentMethod\VirtualAccountChannelCode;
-use Xendit\PaymentRequest\PaymentMethod;
+use Xendit\PaymentRequest\DirectDebitChannelProperties;
 use Xendit\PaymentRequest\PaymentRequest;
 use Xendit\PaymentRequest\PaymentRequestApi;
 use Xendit\PaymentRequest\PaymentRequestParameters;
@@ -63,20 +63,21 @@ class ChargeService
     private function setPaymentMethod(array $requests, PaymentLink $paymentLink): ?array
     {
         // If Payment Method Virtual Account
-        if (in_array($requests["channel_code"], VirtualAccountChannelCode::getAllowableEnumValues(), true)) {
+        if (in_array($requests["channel_code"], VirtualAccountChannelCode::getAllowableEnumValues(), true))
             return $this->VAPayload($requests, $paymentLink);
-        }
 
         // If Payment Method Ewallet
-        if (in_array($requests["channel_code"], EWalletChannelCode::getAllowableEnumValues(), true)) {
+        if (in_array($requests["channel_code"], EWalletChannelCode::getAllowableEnumValues(), true))
             return $this->ewalletPayload($requests, $paymentLink);
-        }
 
 //         if Payment Method Qr
-        if ($requests["channel_code"] === QRCodeChannelCode::QRIS) {
+        if ($requests["channel_code"] === QRCodeChannelCode::QRIS)
             return $this->qrPayload($paymentLink);
-        }
-//
+
+        // If Payment Method Direct Debit.
+        if (in_array(explode("_", $requests["channel_code"])[0], DirectDebitChannelCode::getAllowableEnumValues(), true))
+            return $this->DDPayload($requests, $paymentLink);
+
 //        if (in_array($channelCode, OverTheCounterChannelCode::getAllowableEnumValues(), true)) {
 //            return $this->overTheCounterPayload($channelCode);
 //        }
@@ -101,6 +102,7 @@ class ChargeService
 
     private function ewalletPayload(array $requests, PaymentLink $paymentLink): array
     {
+
         return [
             "type" => PaymentMethodType::EWALLET,
             "reusability" => PaymentMethodReusability::ONE_TIME_USE,
@@ -125,6 +127,35 @@ class ChargeService
                 "channel_properties" => [
                     "expires_at" => $paymentLink->expire_date ?? null,
                 ],
+            ]
+        ];
+    }
+
+    private function DDPayload(array $requests, PaymentLink $paymentLink): array
+    {
+        $channelCode = explode("_", $requests["channel_code"])[0];
+        $channelProperties = new DirectDebitChannelProperties();
+
+        if ($channelCode === DirectDebitChannelCode::MANDIRI) {
+            $channelProperties->setSuccessReturnUrl(
+                $paymentLink->success_payment_redirect ?? Setting::successRedirectUrl());
+            $channelProperties->setFailureReturnUrl(Setting::failedRedirectUrl());
+        }
+
+        if ($channelCode === DirectDebitChannelCode::BRI) {
+            $channelProperties->setMobileNumber("+62" . $requests["mobile_num"]);
+            $channelProperties->setCardLastFour($requests["last_four_digits"]);
+            $channelProperties->setEmail($requests["email"]);
+        }
+
+        $this->paymentRequestParameters->setCustomerId("cust-e289be36-c773-4252-9b62-d5648dffd431");
+
+        return [
+            "type" => PaymentMethodType::DIRECT_DEBIT,
+            "reusability" => PaymentMethodReusability::ONE_TIME_USE,
+            "direct_debit" => [
+                "channel_code" => $channelCode,
+                "channel_properties" => $channelProperties
             ]
         ];
     }
