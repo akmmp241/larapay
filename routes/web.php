@@ -4,7 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WebhookController;
 use App\Http\Middleware\CheckUndoneSettingsMiddleware;
+use App\Http\Middleware\XenditWebhookMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -53,6 +55,7 @@ Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(functio
         });
         // TODO
         Route::get('/checkout/{referenceId}', 'checkout')->name('payment-links.checkout');
+        Route::post('/charge', 'charge')->name('charge');
     });
 
 
@@ -74,7 +77,10 @@ Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(functio
         Route::get('/redirect', 'setRedirect')->name('settings.redirect');
         Route::patch('/redirect', 'storeRedirect')->name('settings.redirect.store');
     });
-
 });
 
-Route::post('/charge', [PaymentController::class, 'charge'])->name('charge');
+Route::middleware(XenditWebhookMiddleware::class)->group(function () {
+    Route::post('/handle/succeed', [WebhookController::class, 'succeeded'])->name('webhook.success');
+    Route::post('/handle/pending', [WebhookController::class, 'pending'])->name('webhook.pending');
+    Route::post('/handle/failed', [WebhookController::class, 'failed'])->name('webhook.failed');
+});

@@ -26,6 +26,8 @@ class PaymentLink extends Model
         "payer_name",
         "payer_email",
         "payer_mobile_num",
+        'created_at',
+        'updated_at',
     ];
 
     protected $casts = [

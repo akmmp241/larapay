@@ -18,9 +18,6 @@ use Illuminate\Support\Str;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Xendit\PaymentMethod\PaymentMethodType;
-use Xendit\PaymentMethod\VirtualAccount;
-use Xendit\PaymentMethod\VirtualAccountChannelProperties;
-use Xendit\PaymentRequest\PaymentMethod;
 use Xendit\PaymentRequest\PaymentRequestStatus;
 use Xendit\XenditSdkException;
 
