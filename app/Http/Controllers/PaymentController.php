@@ -13,10 +13,12 @@ use App\Services\ChargeService;
 use App\Services\PaymentRequestService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -93,9 +95,12 @@ class PaymentController extends Controller
         ]);
     }
 
-    public function checkout($transactionId): View
+    public function checkout(string $referenceId): View
     {
-        $paymentLink = PaymentLink::query()->findOrFail($transactionId);
+        $paymentLink = PaymentLink::query()->where('id', $referenceId)->first();
+        if ($paymentLink->expire_date <= Date::now()) return view("payment-links.expire", compact('paymentLink'));
+
+        $paymentLink = PaymentLink::query()->findOrFail($referenceId);
         $ovo = view('payment-links.components.ovo', compact('paymentLink'));
         $bri_dd = view('payment-links.components.bri-dd', compact('paymentLink'));
         return view('payment-links.checkout', compact('paymentLink', 'ovo', 'bri_dd'));

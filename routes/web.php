@@ -5,6 +5,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebhookController;
+use App\Http\Middleware\CheckExpiredPaymentMiddleware;
 use App\Http\Middleware\CheckUndoneSettingsMiddleware;
 use App\Http\Middleware\XenditWebhookMiddleware;
 use Illuminate\Support\Facades\Route;
