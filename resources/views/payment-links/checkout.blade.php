@@ -33,7 +33,8 @@
                 @if(session()->has('otp-bri'))
                     {!! session('otp-bri') !!}
                 @endif
-                <form action="/charge" method="post">
+                @include('payment-links.components.qr-code')
+                <form action="/charge" method="post" class="visually-hidden">
                     @csrf
                     <input type="hidden" name="id" value="{{$paymentLink->id}}">
                     {!! $ovo !!}

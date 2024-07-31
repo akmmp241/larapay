@@ -5,7 +5,10 @@
             <p id="qr-date" class="mb-0">Expires at </p>
         </div>
         <div class="card-body d-flex justify-content-center align-items-center p-5">
-            <div id="qr-string"></div>
+            <canvas id="qr-string"></canvas>
+        </div>
+        <div class="card-footer mx-auto">
+            <a download="qr.png" id="download" class="btn btn-primary" >Download</a>
         </div>
     </div>
     <script>
@@ -16,16 +19,19 @@
             day: "2-digit",
             hour: "2-digit",
             minute: "2-digit",
-        }).format(qrDate).toUpperCase()
+        }).format().toUpperCase()
 
         document.getElementById('qr-date').innerText = 'BAYAR SEBELUM ' + qrDateIndo
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
     <script>
-        new QRCode(document.getElementById('qr-string'), {
-            text: "{{$qr_string}}",
-            width: 240,
-            height: 240,
-        })
+        new QRious({
+            element: document.getElementById('qr-string'),
+            value: "test",
+            size: 240,
+        }); // generate QR code in canvas
+
+        const download = document.getElementById('download')
+        download.href = document.getElementById('qr-string').toDataURL()
     </script>
 </div>
