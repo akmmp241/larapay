@@ -176,9 +176,6 @@ class PaymentController extends Controller
         return Redirect::back();
     }
 
-    /**
-     * @throws InternalErrorException
-     */
     public function validateOtp(ValidateOtpRequest $request): RedirectResponse
     {
         $requests = $request->validated();
@@ -189,5 +186,11 @@ class PaymentController extends Controller
         $this->paymentRequestService->validateOtp($prAction, $requests["otp"]);
 
         return Redirect::to($paymentLink->success_payment_redirect ?? Setting::successRedirectUrl());
+    }
+
+    public function detail(string $id): View
+    {
+        $paymentLink = PaymentLink::query()->findOrFail($id);
+        return view('payment-links.detail', compact('paymentLink'));
     }
 }

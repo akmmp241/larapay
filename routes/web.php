@@ -50,11 +50,10 @@ Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(functio
     Route::controller(PaymentController::class)->group(function () {
         Route::prefix('/payment-links')->group(function () {
             Route::get('/', 'paymentLinks')->name('payment-links');
-
             Route::get('/create', 'create')->name('payment-links.create');
             Route::post('/create', 'store')->name('payment-links.store');
+            Route::get('/{id}', 'detail')->name('payment-links.detail');
         });
-        // TODO
         Route::get('/checkout/{referenceId}', 'checkout')->name('payment-links.checkout');
         Route::post('/charge', 'charge')->name('charge');
         Route::post('/validate/otp', 'validateOtp')
