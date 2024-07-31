@@ -42,7 +42,7 @@
                                 @if($user->id === auth()->id())
                                     This is you
                                 @else
-                                    <a href="/users/iduser">
+                                    <a href="/users/{{ $user->id }}/edit">
                                         <button type="button" class="btn btn-primary btn-sm">Update</button>
                                     </a>
                                     <a href="#">

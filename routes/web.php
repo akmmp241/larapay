@@ -24,25 +24,27 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(function () {
 
     Route::controller(UserController::class)->group(function () {
+        // TODO: Implement Dashboard
         // Dashboard
         Route::get('/dashboard', 'dashboard')->name('dashboard');
 
         // Users routes
         Route::prefix('/users')->controller(UserController::class)->group(function () {
-            // TODO
-            Route::get('/', 'users');
+            Route::get('/', 'users')->name('users');
 
             Route::get('/new', 'add')->name('users.add');
             Route::post('/new', 'store')->name('users.store');
 
-            // TODO
-            Route::get('/iduser', fn() => view('users.edit-user'));
+            Route::get('/{id}/edit', 'edit')->name('users.edit');
+            Route::put('/{id}/edit', 'update')->name('users.update');
         });
 
-        // TODO
+        // TODO: Implement Profile
         Route::get('/profile', function () {
             return view('auth.profile');
-        });
+        })->name('profile');
+
+        // TODO: Implement update password
     });
 
 
