@@ -31,51 +31,27 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="align-middle">
-                        <td>1.</td>
-                        <td>Akmal Muhammad Pridianto</td>
-                        <td>Admin</td>
-                        <td>akmal@gmail.com</td>
-                        <td>12/12/12 10:10:10</td>
-                        <td class="d-flex flex-row justify-content-evenly">
-                            <a href="/users/iduser">
-                                <button type="button" class="btn btn-primary btn-sm">Update</button>
-                            </a>
-                            <a href="#">
-                                <button type="button" class="btn btn-danger btn-sm">Delete</button>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr class="align-middle">
-                        <td>2.</td>
-                        <td>Joko purnomo</td>
-                        <td>Member</td>
-                        <td>joko@gmail.com</td>
-                        <td>12/12/12 10:10:10</td>
-                        <td class="d-flex flex-row justify-content-evenly">
-                            <a href="/users/iduser">
-                                <button type="button" class="btn btn-primary btn-sm">Update</button>
-                            </a>
-                            <a href="#">
-                                <button type="button" class="btn btn-danger btn-sm">Delete</button>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr class="align-middle">
-                        <td>3.</td>
-                        <td>Iskandar</td>
-                        <td>Member</td>
-                        <td>iska@gmail.com</td>
-                        <td>12/12/12 10:10:10</td>
-                        <td class="d-flex flex-row justify-content-evenly">
-                            <a href="/users/iduser">
-                                <button type="button" class="btn btn-primary btn-sm">Update</button>
-                            </a>
-                            <a href="#">
-                                <button type="button" class="btn btn-danger btn-sm">Delete</button>
-                            </a>
-                        </td>
-                    </tr>
+                    @foreach($users as $key => $user)
+                        <tr class="align-middle">
+                            <td>{{$key + 1}}.</td>
+                            <td>{{ $user->first_name }}</td>
+                            <td>{{ \App\Models\User::$ROLES[$user->role_id - 1] }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->created_at }}</td>
+                            <td class="d-flex flex-row justify-content-evenly">
+                                @if($user->id === auth()->id())
+                                    This is you
+                                @else
+                                    <a href="/users/iduser">
+                                        <button type="button" class="btn btn-primary btn-sm">Update</button>
+                                    </a>
+                                    <a href="#">
+                                        <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                                    </a>
+                                @endauth
+                            </td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>

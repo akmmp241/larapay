@@ -13,6 +13,11 @@ class User extends Authenticatable
     public static int $ADMIN = 1;
     public static int $MEMBER = 2;
 
+    public static array $ROLES = [
+        "Admin",
+        "Member"
+    ];
+
     public static function roles(): array
     {
         return [
@@ -44,4 +49,7 @@ class User extends Authenticatable
             'updated_at' => 'datetime',
         ];
     }
+
+
+
 }

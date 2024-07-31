@@ -39,4 +39,10 @@ class UserController extends Controller
 
         return Redirect::intended('/users')->with('success', 'User berhasil dibuat');
     }
+
+    public function users(): View
+    {
+        $users = User::all();
+        return view('users.manage', compact('users'));
+    }
 }

@@ -28,9 +28,9 @@ Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(functio
         Route::get('/dashboard', 'dashboard')->name('dashboard');
 
         // Users routes
-        Route::prefix('/users')->group(function () {
+        Route::prefix('/users')->controller(UserController::class)->group(function () {
             // TODO
-            Route::get('/', fn() => view('users.manage'));
+            Route::get('/', 'users');
 
             Route::get('/new', 'add')->name('users.add');
             Route::post('/new', 'store')->name('users.store');
