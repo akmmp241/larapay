@@ -33,12 +33,12 @@
                 @if(session()->has('otp-bri'))
                     {!! session('otp-bri') !!}
                 @endif
-                @include('payment-links.components.qr-code')
-                <form action="/charge" method="post" class="visually-hidden">
+                <form action="{{ route('charge') }}" method="post">
                     @csrf
                     <input type="hidden" name="id" value="{{$paymentLink->id}}">
                     {!! $ovo !!}
                     {!! $bri_dd !!}
+                    @include('payment-links.components.cards')
                     @if(session()->has('success-page-ovo'))
                         @include('payment-links.components.' . session('success-page-ovo'))
                     @endif
@@ -270,6 +270,30 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFive">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseSix" aria-expanded="false"
+                                            aria-controls="collapseSix">
+                                        <i class="bi bi-credit-card"></i>&nbsp;
+                                        Cards (Credit/Debit)
+                                    </button>
+                                </h2>
+                                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="row gap-4 mx-auto">
+                                            <div style="width: 30%;" class="card">
+                                                <button type="button" id="cards"
+                                                        class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
+                                                        style="cursor: pointer;">
+                                                    <span class="h3"><i class="bi bi-credit-card-fill"></i></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -325,14 +349,21 @@
     document.getElementById('ovo').onclick = () => {
         document.getElementById('form-ovo').classList.remove('visually-hidden')
         document.getElementById('payment-methods').classList.add('visually-hidden')
-        document.getElementById('ovo-required').setAttribute('required', true)
+        document.getElementById('ovo-required').setAttribute('required', "true")
     }
     document.getElementById('bri-dd').onclick = () => {
         document.getElementById('form-bri-dd').classList.remove('visually-hidden')
         document.getElementById('payment-methods').classList.add('visually-hidden')
-        document.getElementById('bri-dd-mobile').setAttribute('required', true)
-        document.getElementById('bri-dd-email').setAttribute('required', true)
-        document.getElementById('bri-dd-card').setAttribute('required', true)
+        document.getElementById('bri-dd-mobile').setAttribute('required', "true")
+        document.getElementById('bri-dd-email').setAttribute('required', "true")
+        document.getElementById('bri-dd-card').setAttribute('required', "true")
+    }
+    document.getElementById('cards').onclick = () => {
+        document.getElementById('form-cards').classList.remove('visually-hidden')
+        document.getElementById('payment-methods').classList.add('visually-hidden')
+        document.getElementById('card_number').setAttribute('required', "true")
+        document.getElementById('valid_thru').setAttribute('required', "true")
+        document.getElementById('cvn').setAttribute('required', "true")
     }
 </script>
 

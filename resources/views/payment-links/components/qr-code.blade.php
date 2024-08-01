@@ -12,16 +12,8 @@
         </div>
     </div>
     <script>
-        let qrDate = new Date("{{$expires_at->format('Y-M-d H:i:s')}}")
-        let qrDateIndo = new Intl.DateTimeFormat('id-ID', {
-            year: "numeric",
-            month: "long",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-        }).format().toUpperCase()
 
-        document.getElementById('qr-date').innerText = 'BAYAR SEBELUM ' + qrDateIndo
+        document.getElementById('qr-date').innerText = 'BAYAR SEBELUM ' + dateIndoFormat
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
     <script>

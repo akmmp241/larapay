@@ -77,7 +77,8 @@ Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(functio
         });
 
         // TODO
-        Route::get('/payment-methods', fn() => view('settings.set-default-payment-methods'));
+        Route::get('/payment-methods', 'setDefaultPaymentMethod')->name('settings.payment-methods');
+        Route::patch('/payment-methods', 'updateDefaultPaymentMethod')->name('settings.payment-methods.update');
 
         Route::get('/redirect', 'setRedirect')->name('settings.redirect');
         Route::patch('/redirect', 'storeRedirect')->name('settings.redirect.store');

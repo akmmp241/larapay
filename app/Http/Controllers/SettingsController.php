@@ -69,4 +69,53 @@ class SettingsController extends Controller
             "success" => "Success change your default redirect!"
         ]);
     }
+
+    public function setDefaultPaymentMethod(): View
+    {
+        $paymentMethods = Setting::paymentMethods();
+
+        return view('settings.set-default-payment-methods', compact('paymentMethods'));
+    }
+
+    public function updateDefaultPaymentMethod(Request $request): RedirectResponse
+    {
+        $requests = $request->only(['ewallet', 'va', 'otc', 'qris', 'dd', 'cc']);
+
+        $payload = [
+            "ewallet" => [
+                "dana" => (bool)$request->get('dana'),
+                "linkaja" => (bool)$request->get('linkaja'),
+                "ovo" => (bool) $request->get('ovo'),
+                "shopeepay" => (bool) $request->get('shopeepay'),
+            ],
+            "va" => [
+                "bjb" => (bool)$request->get('bjb'),
+                "bnc" => (bool)$request->get('bnc'),
+                "cimb" => (bool)$request->get('cimb'),
+                "permata" => (bool)$request->get('permata'),
+                "mandiri" => (bool)$request->get('mandiri'),
+                "sahabat_sampoerna" => (bool)$request->get('sahabat_sampoerna'),
+                "bca" => (bool)$request->get('bca'),
+                "bri" => (bool)$request->get('bri'),
+                "bsi" => (bool)$request->get('bsi'),
+                "bni" => (bool)$request->get('bni'),
+            ],
+            "otc" => [
+                "indomaret" => (bool)$request->get('indomaret'),
+                "alfamart" => (bool)$request->get('alfamart'),
+            ],
+            "qris" => (bool)$request->get('qris'),
+            "dd" => [
+                "bri_dd" => (bool)$request->get('bri_dd'),
+                "mandiri_dd" => (bool)$request->get('mandiri'),
+            ],
+            "cc" => (bool)$request->get('cc'),
+        ];
+
+        Setting::query()->first()->update([
+            "default_payment_method" => $payload,
+        ]);
+
+        return Redirect::back()->with(["success" => "Success change your default payment method!"]);
+    }
 }

@@ -26,6 +26,10 @@ class Setting extends Model
         'payment_failed_redirect_url'
     ];
 
+    protected $casts = [
+        "default_payment_method" => 'array'
+    ];
+
     public static function xenditMode(): ?string
     {
         return self::query()->first()->xendit_mode;
@@ -46,9 +50,9 @@ class Setting extends Model
         return self::query()->first()->xendit_webhook_token;
     }
 
-    public static function paymentMethods(): ?string
+    public static function paymentMethods(): ?array
     {
-        return self::query()->first()->default_payment_method;
+            return self::query()->first()->default_payment_method;
     }
 
     public static function successRedirectUrl(): ?string
