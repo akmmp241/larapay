@@ -9,8 +9,7 @@
                         <img src="{{asset("dist/assets/img/avatar.png")}}" alt="Profile" width="80" height="80"
                              class="border border-1">
                         <div>
-                            <h4>Akmal Muhammad Pridianto</h4>
-                            <p class="mb-0">@akmmp</p>
+                            <h4>{{ $user->first_name . ' '  .  $user->last_name }}</h4>
                         </div>
                     </div>
                     <div>
@@ -19,7 +18,7 @@
                 </div>
             </div>
         </div> <!--end::Profile Header-->
-
+        @include('component.alert-success')
         <div class="row">
             <div class="col">
                 <div class="card">
@@ -27,40 +26,43 @@
                         <h2>Your Profile</h2>
                     </div>
                     <div class="card-body">
-                        <form class="d-flex flex-column gap-5">
+                        <form action="{{ route('profile.update') }}" method="post" class="d-flex flex-column gap-5">
+                            @method('PUT')
+                            @csrf
                             <div id="user-information" class="row">
                                 <div class="card-title mb-4">
                                     <h4 class="text-muted">User information</h4>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col">
-                                        <label for="username" class="form-label">Username</label>
-                                        <input type="text" class="form-control" id="username"
-                                               placeholder="Enter your name"
-                                               required/>
-                                        <div class="text-danger">Min 3 characters</div>
-                                    </div>
-                                    <div class="col">
                                         <label for="email" class="form-label">Email Address</label>
-                                        <input type="text" class="form-control" id="email"
+                                        <input type="text" name="email" class="form-control" id="email"
+                                               value="{{ $user->email }}"
                                                placeholder="Enter your email address" required/>
-                                        <div class="text-danger">Min 3 characters</div>
+                                        @error('email')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
                                         <label for="firstname" class="form-label">First name</label>
-                                        <input type="text" class="form-control" id="firstname"
+                                        <input type="text" name="first_name" class="form-control" id="firstname"
+                                               value="{{ $user->first_name }}"
                                                placeholder="Enter your first name"
                                                required/>
-                                        <div class="text-danger">Min 3 characters</div>
+                                        @error('first_name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="col">
                                         <label for="lastname" class="form-label">Last name</label>
-                                        <input type="text" class="form-control" id="lastname"
-                                               placeholder="Enter your last name"
-                                               required/>
-                                        <div class="text-danger">Min 3 characters</div>
+                                        <input type="text" name="last_name" class="form-control" id="lastname"
+                                               value="{{ $user->last_name }}"
+                                               placeholder="Enter your last name"/>
+                                        @error('last_name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -70,24 +72,29 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col">
-                                        <label for="mobile-number" class="form-label">Mobile number</label>
-                                        <input type="text" class="form-control" id="mobile-number"
+                                        <label for="mobile-number" class="form-label">Mobile number (optional)</label>
+                                        <input type="text" name="mobile_number" class="form-control" id="mobile-number"
+                                               value="{{ $user->mobile_number }}"
                                                placeholder="Enter your mobile number"
                                                required/>
-                                        <div class="text-danger">Min 3 characters</div>
+                                        @error('mobile_number')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <label for="address" class="form-label">Adress</label>
-                                        <input type="text" class="form-control" id="address"
-                                               placeholder="Enter your address"
-                                               required/>
-                                        <div class="text-danger">Min 3 characters</div>
+                                        <label for="address" class="form-label">Adress (optional)</label>
+                                        <input type="text" name="address" class="form-control" id="address"
+                                               value="{{ $user->address }}"
+                                               placeholder="Enter your address"/>
+                                        @error('address')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
-                            <button class="col-3 btn btn-primary">Save</button>
+                            <button type="submit" class="col-3 btn btn-primary">Save</button>
                         </form>
                     </div>
                 </div>

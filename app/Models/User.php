@@ -33,7 +33,7 @@ class User extends Authenticatable
         'email',
         'password',
         'profile_pic',
-        'mobile_num',
+        'mobile_number',
         'address',
     ];
 

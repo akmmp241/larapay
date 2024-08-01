@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Models\User;
@@ -16,6 +17,24 @@ class UserController extends Controller
     public function dashboard(): View
     {
         return view('dashboard');
+    }
+
+    public function profile(): View
+    {
+        $user = Auth::user();
+        return view('users.profile', compact('user'));
+    }
+
+    public function updateProfile(UpdateProfileRequest $request): RedirectResponse
+    {
+        $requests = $request->validated();
+        $user = User::query()->find(Auth::id());
+
+        $user->update($requests);
+
+        return Redirect::back()->with([
+            "success" => "Berhasil mengubah profile!",
+        ]);
     }
 
     public function add(): View

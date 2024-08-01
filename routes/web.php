@@ -40,9 +40,8 @@ Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(functio
         });
 
         // TODO: Implement Profile
-        Route::get('/profile', function () {
-            return view('auth.profile');
-        })->name('profile');
+        Route::get('/profile', 'profile')->name('profile');
+        Route::put('/profile', 'updateProfile')->name('profile.update');
 
         // TODO: Implement update password
     });
