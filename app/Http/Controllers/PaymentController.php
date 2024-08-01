@@ -137,6 +137,9 @@ class PaymentController extends Controller
                         "pr_id" => $response->getId()
                     ])->render()
                 ]);
+
+            // Handle Card action
+            if ($requests["channel_code"] === "CARD") return Redirect::to($response->getActions()[0]["url"]);
         }
 
         // If response PENDING process the response
@@ -176,6 +179,9 @@ class PaymentController extends Controller
         return Redirect::back();
     }
 
+    /**
+     * @throws InternalErrorException
+     */
     public function validateOtp(ValidateOtpRequest $request): RedirectResponse
     {
         $requests = $request->validated();

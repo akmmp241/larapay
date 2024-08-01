@@ -7,8 +7,10 @@ use App\Models\PaymentLink;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
+use Xendit\BalanceAndTransaction\Currency;
 use Xendit\PaymentMethod\DirectDebitChannelCode;
 use Xendit\PaymentMethod\EWalletChannelCode;
+use Xendit\PaymentMethod\PaymentMethodApi;
 use Xendit\PaymentMethod\PaymentMethodReusability;
 use Xendit\PaymentMethod\PaymentMethodType;
 use Xendit\PaymentMethod\QRCodeChannelCode;
@@ -22,11 +24,14 @@ use Xendit\XenditSdkException;
 class ChargeService
 {
     use Helpers;
+
+    private PaymentMethodApi $paymentMethodApi;
     private PaymentRequestApi $paymentRequestApi;
     private PaymentRequestParameters $paymentRequestParameters;
 
     public function __construct()
     {
+        $this->paymentMethodApi = new PaymentMethodApi();
         $this->paymentRequestApi = new PaymentRequestApi();
         $this->paymentRequestParameters = new PaymentRequestParameters([
             "currency" => "IDR",
@@ -44,7 +49,12 @@ class ChargeService
 
         $this->paymentRequestParameters->setAmount($paymentLink->amount);
         $this->paymentRequestParameters->setReferenceId($paymentLink->id);
-        $this->paymentRequestParameters->setPaymentMethod($paymentMethodPayload);
+
+        if ($requests["channel_code"] === "CARD") {
+            $this->paymentRequestParameters->setPaymentMethodId($paymentMethodPayload["payment_method_id"]);
+        } else {
+            $this->paymentRequestParameters->setPaymentMethod($paymentMethodPayload);
+        }
 
         try {
             return $this->paymentRequestApi->createPaymentRequest(payment_request_parameters: $this->paymentRequestParameters);
@@ -78,9 +88,11 @@ class ChargeService
         if (in_array(explode("_", $requests["channel_code"])[0], DirectDebitChannelCode::getAllowableEnumValues(), true))
             return $this->DDPayload($requests, $paymentLink);
 
-//        if (in_array($channelCode, OverTheCounterChannelCode::getAllowableEnumValues(), true)) {
-//            return $this->overTheCounterPayload($channelCode);
-//        }
+        // If Payment Method Card
+        if ($requests["channel_code"] === "CARD") {
+            $payload = $this->createCardPaymentMethodPayload($requests);
+            return $this->cardPayload($payload, $paymentLink);
+        }
 
         return null;
     }
@@ -157,6 +169,43 @@ class ChargeService
                 "channel_code" => $channelCode,
                 "channel_properties" => $channelProperties
             ]
+        ];
+    }
+
+    public function createCardPaymentMethodPayload(array $requests): array
+    {
+        $validThru = explode("/", $requests["valid_thru"]);
+
+        return [
+            "type" => PaymentMethodType::CARD,
+            "reusability" => PaymentMethodReusability::ONE_TIME_USE,
+            "card" => [
+                "currency" => Currency::IDR,
+                "channel_properties" => [
+                    "success_return_url" => $paymentLink->success_payment_redirect ?? Setting::successRedirectUrl(),
+                    "failure_return_url" => Setting::failedRedirectUrl(),
+                ],
+                "card_information" => [
+                    "card_number" => $requests["card_number"],
+                    "expiry_month" => $validThru[0],
+                    "expiry_year" => "20" . $validThru[1],
+                    "cvv" => $requests["cvn"]
+                ]
+            ]
+        ];
+    }
+
+    public function cardPayload(array $payload, PaymentLink $paymentLink): array
+    {
+        try {
+            $response = $this->paymentMethodApi->createPaymentMethod(payment_method_parameters: $payload);
+        } catch (XenditSdkException $e) {
+            Log::error($e);
+            throw new InternalErrorException('Failed to process payment request');
+        }
+
+        return [
+            "payment_method_id" => $response->getId()
         ];
     }
 }

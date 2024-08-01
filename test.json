@@ -1,0 +1,18 @@
+{
+    "type": "CARD",
+    "reusability": "ONE_TIME_USE",
+    "card": {
+        "currency": "IDR",
+        "channel_properties": {
+            "success_return_url": "https://redirect.me/goodstuff",
+            "failure_return_url": "https://redirect.me/badstuff"
+        },
+        "card_information": {
+            "card_number": "4000000000001091",
+            "expiry_month": "12",
+            "expiry_year": "2040",
+            "cardholder_name": "Akmal Muhammad P",
+            "cvv": "123"
+        }
+    }
+}
