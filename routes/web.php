@@ -39,7 +39,6 @@ Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(functio
             Route::put('/{id}/edit', 'update')->name('users.update');
         });
 
-        // TODO: Implement Profile
         Route::get('/profile', 'profile')->name('profile');
         Route::put('/profile', 'updateProfile')->name('profile.update');
 

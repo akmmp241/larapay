@@ -90,7 +90,7 @@
                                     <td>{{$paymentLink->payer_name}}</td>
                                     <td>{{$paymentLink->amount}}</td>
                                     <td class="d-flex flex-row gap-2">
-                                        <a href="#">
+                                        <a href="{{ route('payment-links.checkout', $paymentLink->id) }}">
                                             <button type="button" class="btn btn-primary btn-sm">Pay URL</button>
                                         </a>
                                     </td>

@@ -97,14 +97,35 @@ class PaymentController extends Controller
     {
         $paymentLink = PaymentLink::query()->findOrFail($referenceId);
 
+        // Handle if payment already paid
         if ($paymentLink->paid_at) return view('payment-links.paid', compact('paymentLink'));
 
+        // handle if payment already expire
         if ($paymentLink->expire_date <= Date::now()) return view("payment-links.expire", compact('paymentLink'));
 
-        $ovo = view('payment-links.components.ovo', compact('paymentLink'));
-        $bri_dd = view('payment-links.components.bri-dd', compact('paymentLink'));
+        // Get all activated payment methods from settings
+        $activatedPaymentMethods = Setting::paymentMethods();
 
-        return view('payment-links.checkout', compact('paymentLink', 'ovo', 'bri_dd'));
+        // Process the activated payment methods
+        foreach ($activatedPaymentMethods as $key1 => $activatedPaymentMethod) {
+            if (!is_array($activatedPaymentMethod)) {
+                if (!$activatedPaymentMethod) unset($activatedPaymentMethods[$key1]);
+                continue;
+            }
+            foreach ($activatedPaymentMethod as $key2 => $paymentMethod) {
+                if (!$paymentMethod) unset($activatedPaymentMethods[$key1][$key2]);
+            }
+            if ($activatedPaymentMethods[$key1] == []) unset($activatedPaymentMethods[$key1]);
+        }
+
+        $data = [
+            "activatedPaymentMethods" => $activatedPaymentMethods,
+            "paymentLink" => $paymentLink
+        ];
+        if (isset($activatedPaymentMethods["ewallet"]["ovo"])) $data["ovo"] = view('payment-links.components.ovo', compact('paymentLink'));
+        if (isset($activatedPaymentMethods["dd"]["bri_dd"])) $data["bri_dd"] = view('payment-links.components.bri-dd', compact('paymentLink'));
+
+        return view('payment-links.checkout', $data);
     }
 
     public function charge(ChargeRequest $request): RedirectResponse
