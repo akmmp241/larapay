@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+{{--@dd($paymentLinks->links())--}}
+
 @section('content')
     @include('layouts.navbar')
 
@@ -19,7 +21,6 @@
                 <div class="card mb-4" style="min-height: 600px">
                     <div class="card-header">
                         <form action="{{route('payment-links')}}" method="get">
-
                             <div class="d-flex justify-content-between align-items-center ">
                                 <div class="d-flex align-items-center gap-5">
                                     <div class="d-flex gap-2 align-items-center">
@@ -63,7 +64,7 @@
                         </form>
                     </div>
                     <div class="card-body">
-                        <table class="table">
+                        <table class="table mb-3">
                             <thead>
                             <tr>
                                 <th style="width: 30%;">Reference ID</th>
@@ -97,6 +98,7 @@
                             @endforeach
                             </tbody>
                         </table>
+                        {{ $paymentLinks->links() }}
                     </div>
                 </div>
                 @include('component.alert-success')

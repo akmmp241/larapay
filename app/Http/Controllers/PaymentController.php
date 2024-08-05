@@ -49,7 +49,7 @@ class PaymentController extends Controller
         if ($request->get('search') !== null)
             $paymentLink->where($request->get('search_by') ?? 'id', 'like', '%' . $request->get('search') . '%');
 
-        $paymentLinks = $paymentLink->get();
+        $paymentLinks = $paymentLink->paginate(10);
 
         return view('payment-links.payment-links', compact('paymentLinks'));
     }
