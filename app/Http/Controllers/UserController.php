@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Models\User;
 use App\Rules\DuplicateEmail;
+use App\Rules\OldPassword;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
@@ -83,5 +86,16 @@ class UserController extends Controller
         $user->update($requests);
 
         return Redirect::intended(route('users'))->with('success', 'User berhasil diupdate');
+    }
+
+    function updatePassword(UpdatePasswordRequest $request): RedirectResponse
+    {
+        $requests = $request->validated();
+
+        User::query()->find(Auth::id())->update([
+            "password" => $requests['password']
+        ]);
+
+        return Redirect::back()->with(["success" => "Berhasil mengubah password!"]);
     }
 }

@@ -105,37 +105,46 @@
                         <h2>Change Password</h2>
                     </div>
                     <div class="card-body">
-                        <form class="d-flex flex-column gap-5">
+                        <form action="{{ route('profile.password') }}" method="post" class="d-flex flex-column gap-5">
+                            @method('PATCH')
+                            @csrf
                             <div id="user-information" class="row">
                                 <div class="row mb-3">
                                     <div class="col">
-                                        <label for="current-password" class="form-label">Current Password</label>
-                                        <input type="text" class="form-control" id="current-password"
-                                               placeholder="Enter current password of your account"
-                                               required/>
-                                        <div class="text-danger">Min 3 characters</div>
+                                        <label for="current_password" class="form-label">Current Password</label>
+                                        <input type="password" name="current_password" class="form-control"
+                                               id="current-password" required
+                                               placeholder="Enter current password of your account"/>
+                                        @error('current_password')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col">
-                                        <label for="new-password" class="form-label">New Password</label>
-                                        <input type="text" class="form-control" id="new-password"
+                                        <label for="password" class="form-label">New Password</label>
+                                        <input type="password" name="password" class="form-control" id="password"
                                                placeholder="Enter your new password"
                                                required/>
-                                        <div class="text-danger">Min 3 characters</div>
+                                        @error('password')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col">
-                                        <label for="password-confirmation" class="form-label">Confirmation</label>
-                                        <input type="text" class="form-control" id="password-confirmation"
+                                        <label for="password_confirmation" class="form-label">Confirmation</label>
+                                        <input type="password" name="password_confirmation" class="form-control"
+                                               id="password-confirmation"
                                                placeholder="Enter your new password again"
                                                required/>
-                                        <div class="text-danger">Min 3 characters</div>
+                                        @error('password_confirmation')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
-                            <button class="col-4 btn btn-primary">Change Password</button>
+                            <button type="submit" class="col-4 btn btn-primary">Change Password</button>
                         </form>
                     </div>
                 </div>

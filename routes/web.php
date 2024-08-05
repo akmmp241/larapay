@@ -41,8 +41,7 @@ Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(functio
 
         Route::get('/profile', 'profile')->name('profile');
         Route::put('/profile', 'updateProfile')->name('profile.update');
-
-        // TODO: Implement update password
+        Route::patch('/profile', 'updatePassword')->name('profile.password');
     });
 
 
