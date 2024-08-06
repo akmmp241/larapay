@@ -6,20 +6,48 @@ use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\User\CreateUserRequest;
+use App\Models\PaymentLink;
 use App\Models\User;
 use App\Rules\DuplicateEmail;
-use App\Rules\OldPassword;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
     public function dashboard(): View
     {
-        return view('dashboard');
+
+        $latestPaymentLinks = PaymentLink::query()->latest('created_at')->take(5)->get();
+
+        $queryInit = DB::table('payment_links');
+
+        $query = match (DB::getDriverName()) {
+            'mysql' => $queryInit->selectRaw("DATE_FORMAT(created_at, '%M') as Month), SUM(amount) as total"),
+            'sqlite' => $queryInit->selectRaw("CASE strftime('%m', created_at)
+        WHEN '01' THEN 'January'
+        WHEN '02' THEN 'February'
+        WHEN '03' THEN 'March'
+        WHEN '04' THEN 'April'
+        WHEN '05' THEN 'May'
+        WHEN '06' THEN 'June'
+        WHEN '07' THEN 'July'
+        WHEN '08' THEN 'August'
+        WHEN '09' THEN 'September'
+        WHEN '10' THEN 'October'
+        WHEN '11' THEN 'November'
+        WHEN '12' THEN 'December'
+        END || ' ' || strftime('%Y', created_at) AS month,
+    SUM(amount) as total"),
+        };
+
+        $incomeByMonth = $query->groupBy('Month')
+            ->orderBy('month')
+            ->get();
+
+        return view('dashboard', compact('latestPaymentLinks', 'incomeByMonth'));
     }
 
     public function profile(): View

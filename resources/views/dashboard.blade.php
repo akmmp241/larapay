@@ -12,34 +12,6 @@
         <div class="app-content">
             <div class="container-fluid mb-5">
                 <div class="row justify-content-between">
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box text-bg-primary">
-                            <div class="inner">
-                                <h3>Rp. 1.000.000.000</h3>
-                                <p>Total saldo</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box text-bg-success">
-                            <div class="inner">
-                                <h3>Rp. 1.000.000.000</h3>
-                                <p>Uang Masuk hari ini</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box text-bg-danger">
-                            <div class="inner">
-                                <h3>Rp. 1.000.000.000</h3>
-                                <p>Uang Keluar hari ini</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container-fluid mb-5">
-                <div class="row justify-content-between">
                     <div class="col-6 connectedSortable">
                         <div class="card mb-4">
                             <div class="card-header">
@@ -66,18 +38,20 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr class="align-middle">
-                                        <td><span class="badge text-bg-primary">Paid</span></td>
-                                        <td>12/12/12 10:10:10</td>
-                                        <td>23b2-n239a-12jn3a92ne-n2j3nad</td>
-                                        <td>Rp. 99.000</td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <td><span class="badge text-bg-success">Settled</span></td>
-                                        <td>12/12/12 10:10:10</td>
-                                        <td>23b2-n239a-12jn3a92ne-n2j3nad</td>
-                                        <td>Rp. 99.000</td>
-                                    </tr>
+                                    @foreach($latestPaymentLinks as $paymentLink)
+                                        <tr class="align-middle">
+                                            <td>
+                                                @if($paymentLink->status === "PAID")
+                                                    <span class="badge text-bg-primary">{{$paymentLink->status}}</span>
+                                                @elseif($paymentLink->status === "PENDING")
+                                                    <span class="badge text-bg-warning">{{$paymentLink->status}}</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $paymentLink->created_at }}</td>
+                                            <td>{{ $paymentLink->id }}</td>
+                                            <td><span class="amount">{{ $paymentLink->amount }}</span></td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -87,61 +61,13 @@
             </div>
             <div class="container-fluid mb-5">
                 <div class="row justify-content-between">
-                    <div class="col-3">
-                        <a href="/payment-links/create" style="text-decoration: none; color: black">
-                            <div class="small-box border border-warning border-2">
-                                <div class="inner p-4 d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h4>Create Payment Link</h4>
-                                        <p class="mb-0">Create and share it to get your payment</p>
-                                    </div>
-                                    <img src="{{asset("assets/arrow-right.png")}}" width="24" height="24"
-                                         alt="arrow right">
-                                </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box text-bg-success">
+                            <div class="inner">
+                                <h3>Rp. 1.000.000.000</h3>
+                                <p>Uang Masuk hari ini</p>
                             </div>
-                        </a>
-                    </div>
-                    <div class="col-3">
-                        <a href="/settings/xendit/api-key" style="text-decoration: none; color: black">
-                            <div class="small-box border border-info border-2">
-                                <div class="inner p-4 d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h4>Set Xendit API Key</h4>
-                                        <p class="mb-0">Integrate with your xendit account</p>
-                                    </div>
-                                    <img src="{{asset("assets/arrow-right.png")}}" width="24" height="24"
-                                         alt="arrow right">
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-3">
-                        <a href="/settings/xendit/webhook" style="text-decoration: none; color: black">
-                            <div class="small-box border border-primary border-2">
-                                <div class="inner p-4 d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h4>Set Webhook</h4>
-                                        <p class="mb-0">Integrete webhook for security</p>
-                                    </div>
-                                    <img src="{{asset("assets/arrow-right.png")}}" width="24" height="24"
-                                         alt="arrow right">
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-3">
-                        <a href="/settings/payment-methods" style="text-decoration: none; color: black">
-                            <div class="small-box border border-success border-2">
-                                <div class="inner p-4 d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h4>Set Payment Methods</h4>
-                                        <p class="mb-0">Set the default payment methods</p>
-                                    </div>
-                                    <img src="{{asset("assets/arrow-right.png")}}" width="24" height="24"
-                                         alt="arrow right">
-                                </div>
-                            </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -159,11 +85,19 @@
                 }).format(number);
             }
 
+
+            document.querySelectorAll('.amount').forEach(val => {
+                val.innerText = formatRP(val.innerText)
+            })
+
             const options = {
                 series: [{
                     name: "Money in",
-                    data: [200000000, 46_000_000, 112_000_000, 79_000_000, 134_000_000],
-                    display: ["test", "test", "test", "test", "test"]
+                    data: [
+                        @foreach($incomeByMonth as $income)
+                                {{ $income->total . "," }}
+                                @endforeach
+                    ]
                 }],
                 chart: {
                     height: 300,
@@ -189,7 +123,11 @@
                     },
                 },
                 xaxis: {
-                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'],
+                    categories: [
+                        @foreach($incomeByMonth as $income)
+                            "{{ $income->month , }}",
+                        @endforeach
+                    ]
                 },
                 yaxis: {
                     labels: {
