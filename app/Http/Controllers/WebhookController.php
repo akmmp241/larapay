@@ -6,9 +6,9 @@ use App\Models\PaymentLink;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Xendit\PaymentMethod\PaymentMethodAction;
 use Xendit\PaymentRequest\Error;
 use Xendit\PaymentRequest\PaymentCallbackData;
 
@@ -18,17 +18,22 @@ class WebhookController extends Controller
     {
         $data = new PaymentCallbackData($request->get('data'));
         $paidAt = Date::parse($data->getUpdated())->setTimezone('Asia/Jakarta')->toDateTimeString();
+        Log::info($paidAt);
         $paymentMethodType = $data->getPaymentMethod()["type"];
 
         // Check for payment link
         $paymentLink = PaymentLink::query()->where('id', $data['reference_id'])->first();
         if (!$paymentLink) throw new NotFoundHttpException("Payment link not found");
 
+        // Handle channelCode if CARD
+        if ($paymentMethodType === "CARD") $channelCode = $paymentMethodType;
+        else $channelCode = $data->getPaymentMethod()[strtolower($paymentMethodType)]["channel_code"];
+
         // Update Payment link
         $paymentLink->xendit_pr_id = $data->getPaymentRequestId();
         $paymentLink->status = "PAID";
         $paymentLink->paid_at = $paidAt;
-        $paymentLink->channel_code = $data->getPaymentMethod()[strtolower($paymentMethodType)]["channel_code"];
+        $paymentLink->channel_code = $channelCode;
         $paymentLink->updated_at = Date::now();
         $paymentLink->save();
 

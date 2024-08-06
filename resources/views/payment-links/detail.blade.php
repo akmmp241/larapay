@@ -1,3 +1,5 @@
+@use(App\Helpers)
+
 @extends('layouts.master')
 
 @section('content')
@@ -62,6 +64,19 @@
                     </div>
                     <div class="card-header">
                         <div class="row">
+                            <h5 class="mb-0 col-3">Estimated Settled</h5>
+                            <h5 class="mb-0 col-2">: </h5>
+                            <h5 class="mb-0 col">
+                                @if($paymentLink->paid_at)
+                                    {{ $estimatedSettle }}
+                                @else
+                                    -
+                                @endif
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="card-header">
+                        <div class="row">
                             <h5 class="mb-0 col-3">Payment channel </h5>
                             <h5 class="mb-0 col-2">: </h5>
                             <h5 class="mb-0 col">{{ $paymentLink->channel_code }}</h5>
@@ -71,15 +86,19 @@
                         <div class="row">
                             <h5 class="mb-0 col-3">Failure code </h5>
                             <h5 class="mb-0 col-2">: </h5>
-                            <h5 class="mb-0 col">{{ $paymentLink->failure_code }}</h5>
+                            <h5 class="mb-0 col">{{ $paymentLink->failure_code ?? '-' }}</h5>
                         </div>
                     </div>
                     <div class="card-header">
-                        <div class="row">
+                        <div class="row align-items-center">
                             <h5 class="mb-0 col-3">Customer </h5>
                             <h5 class="mb-0 col-2">: </h5>
                             <div class="mb-0 col">
-
+                                <ul style="list-style: none" class="mb-0">
+                                    <li>Name: {{ $paymentLink->payer_name ?? '-' }}</li>
+                                    <li>Email: {{ $paymentLink->payer_email ?? '-' }}</li>
+                                    <li>Phone: {{ $paymentLink->payer_mobile_num ?? '-' }}</li>
+                                </ul>
                             </div>
                         </div>
                     </div>

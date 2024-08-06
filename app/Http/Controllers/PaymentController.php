@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers;
 use App\Http\Requests\ChargeRequest;
 use App\Http\Requests\CreatePaymentLinkRequest;
 use App\Http\Requests\GetPaymentLinksRequest;
@@ -28,6 +29,7 @@ use Xendit\XenditSdkException;
 
 class PaymentController extends Controller
 {
+    use Helpers;
     private ChargeService $chargeService;
     private PaymentRequestService $paymentRequestService;
 
@@ -49,7 +51,7 @@ class PaymentController extends Controller
         if ($request->get('search') !== null)
             $paymentLink->where($request->get('search_by') ?? 'id', 'like', '%' . $request->get('search') . '%');
 
-        $paymentLinks = $paymentLink->paginate(10);
+        $paymentLinks = $paymentLink->orderBy('created_at', 'DESC')->paginate(10);
 
         return view('payment-links.payment-links', compact('paymentLinks'));
     }
@@ -64,13 +66,14 @@ class PaymentController extends Controller
     {
         $requests = $request->validated();
         $dateNow = Date::now();
+        $expireDate = clone $dateNow;
 
         $payload = [
             "id" => $requests['id'],
             "amount" => $requests['amount'],
             "status" => "PENDING",
             "description" => $requests['description'] ?? null,
-            "expire_date" => $requests['expire_date'] ?? $dateNow->addDay(),
+            "expire_date" => $requests['expire_date'] ?? $expireDate->addDay(1),
             "success_payment_redirect" => $requests['success_payment_redirect'] ?? Setting::successRedirectUrl(),
             "payment_method" => "all",
             "payer_email" => $requests['payer_email'] ?? null,
@@ -161,6 +164,9 @@ class PaymentController extends Controller
 
             // Handle Card action
             if ($requests["channel_code"] === "CARD") return Redirect::to($response->getActions()[0]["url"]);
+
+            return Redirect::to($response->getActions()[0]["url"]);
+
         }
 
         // If response PENDING process the response
@@ -218,6 +224,7 @@ class PaymentController extends Controller
     public function detail(string $id): View
     {
         $paymentLink = PaymentLink::query()->findOrFail($id);
-        return view('payment-links.detail', compact('paymentLink'));
+        $estimatedSettle = $this::estimatedService($paymentLink->channel_code);
+        return view('payment-links.detail', compact('paymentLink', 'estimatedSettle'));
     }
 }

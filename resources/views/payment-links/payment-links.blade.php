@@ -1,7 +1,5 @@
 @extends('layouts.master')
 
-{{--@dd($paymentLinks->links())--}}
-
 @section('content')
     @include('layouts.navbar')
 
@@ -78,7 +76,11 @@
                             <tbody>
                             @foreach($paymentLinks as $paymentLink)
                                 <tr class="align-middle">
-                                    <td>{{$paymentLink->id}}</td>
+                                    <td>
+                                        <a class="text-decoration-none text-black" href="{{ route('payment-links.detail', $paymentLink->id) }}">
+                                            {{$paymentLink->id}}
+                                        </a>
+                                    </td>
                                     <td>
                                         @if($paymentLink->status === "PAID")
                                             <span class="badge text-bg-primary">{{$paymentLink->status}}</span>

@@ -32,4 +32,31 @@ trait Helpers
             "settings" => $needToSet
         ];
     }
+
+    public static function estimatedService(?string $channelCode): ?string
+    {
+        $data = [
+            "CARD" => "H+5 Hari",
+            "BCA" => "H+1 Hari",
+            "BNI" => "Instant",
+            "BRI" => "Instant",
+            "BJB" => "Instant",
+            "BSI" => "Instant",
+            "BNC" => "Instant",
+            "CIMB" => "Instant",
+            "BSS" => "Instant",
+            "PERMATA" => "Instant",
+            "MANDIRI" => "H+1 Hari",
+            "LINKAJA" => "H+2 Hari",
+            "SHOPEEPAY" => "H+2 Hari",
+            "OVO" => "H+2 Hari",
+            "DANA" => "H+2 Hari",
+            "JENIUSPAY" => "H+2 Hari",
+            "ASTRAPAY" => "H+2 Hari",
+            "INDOMARET" => "H+5 Hari Kerja",
+            "ALFAMART" => "H+5 Hari Kerja",
+        ];
+
+        return $data[$channelCode] ?? null;
+    }
 }

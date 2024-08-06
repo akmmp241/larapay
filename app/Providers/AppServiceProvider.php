@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Setting;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Env;
 use Illuminate\Support\ServiceProvider;

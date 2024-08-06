@@ -128,7 +128,7 @@
                                                     </button>
                                                 </div>
                                             @endisset
-                                            @isset($activatedPaymentMethods["ewallet"]["ovo"])
+                                                @isset($activatedPaymentMethods["ewallet"]["jeniuspay"])
                                                 <div style="width: 30%;" class="card">
                                                     <button type="submit" name="channel_code" value="JENIUSPAY"
                                                             class="btn d-flex align-items-center justify-content-center card-body p-4 border-0"
@@ -337,7 +337,6 @@
                                                     </button>
                                                 </div>
                                             @endisset
-
                                         </div>
                                     </div>
                                 </div>
@@ -423,11 +422,14 @@
 </script>
 
 <script>
+    @isset($activatedPaymentMethods["ewallet"]["ovo"])
     document.getElementById('ovo').onclick = () => {
         document.getElementById('form-ovo').classList.remove('visually-hidden')
         document.getElementById('payment-methods').classList.add('visually-hidden')
         document.getElementById('ovo-required').setAttribute('required', "true")
     }
+    @endisset
+    @isset($activatedPaymentMethods["dd"]["bri_dd"])
     document.getElementById('bri-dd').onclick = () => {
         document.getElementById('form-bri-dd').classList.remove('visually-hidden')
         document.getElementById('payment-methods').classList.add('visually-hidden')
@@ -435,6 +437,8 @@
         document.getElementById('bri-dd-email').setAttribute('required', "true")
         document.getElementById('bri-dd-card').setAttribute('required', "true")
     }
+    @endisset
+    @isset($activatedPaymentMethods["cc"])
     document.getElementById('cards').onclick = () => {
         document.getElementById('form-cards').classList.remove('visually-hidden')
         document.getElementById('payment-methods').classList.add('visually-hidden')
@@ -442,6 +446,7 @@
         document.getElementById('valid_thru').setAttribute('required', "true")
         document.getElementById('cvn').setAttribute('required', "true")
     }
+    @endisset
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.3.0/browser/overlayscrollbars.browser.es6.min.js"
