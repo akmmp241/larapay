@@ -90,7 +90,7 @@
                                     </td>
                                     <td>{{$paymentLink->created_at}}</td>
                                     <td>{{$paymentLink->payer_name}}</td>
-                                    <td>{{$paymentLink->amount}}</td>
+                                    <td><span class="amount">{{$paymentLink->amount}}</span></td>
                                     <td class="d-flex flex-row gap-2">
                                         <a href="{{ route('payment-links.checkout', $paymentLink->id) }}">
                                             <button type="button" class="btn btn-primary btn-sm">Pay URL</button>
@@ -107,4 +107,17 @@
             </div>
         </div>
     </main>
+    <script>
+        const formatRP = (number) => {
+            return new Intl.NumberFormat("id-ID", {
+                currency: "IDR",
+                style: "currency",
+                maximumFractionDigits: 0
+            }).format(number);
+        }
+
+        document.querySelectorAll('.amount').forEach(val => {
+            val.innerText = formatRP(val.innerText)
+        })
+    </script>
 @endsection
