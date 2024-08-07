@@ -48,9 +48,6 @@
                 @isset($activatedPaymentMethods["cc"])
                     @include('payment-links.components.cards')
                 @endisset
-                @isset($activatedPaymentMethods["dd"]["bri_dd"])
-                    {!! $bri_dd !!}
-                @endisset
                 @isset($activatedPaymentMethods["va"])
                     @if(session()->has('success-page-bank'))
                         {!! session('success-page-bank') !!}
@@ -262,7 +259,7 @@
                                                 </div>
                                             @endisset
                                             @isset($activatedPaymentMethods["otc"]["alfamart"])
-                                                <div style="width: 30%;" class="card">
+                                                <div style="width: 30%;" class="canullablerd">
                                                     <div class="card-body">
                                                         Alfamart
                                                     </div>
@@ -427,6 +424,7 @@
         document.getElementById('form-ovo').classList.remove('visually-hidden')
         document.getElementById('payment-methods').classList.add('visually-hidden')
         document.getElementById('ovo-required').setAttribute('required', "true")
+        document.getElementById('ovo-required').setAttribute('name', "mobile_num")
     }
     @endisset
     @isset($activatedPaymentMethods["dd"]["bri_dd"])
@@ -434,6 +432,7 @@
         document.getElementById('form-bri-dd').classList.remove('visually-hidden')
         document.getElementById('payment-methods').classList.add('visually-hidden')
         document.getElementById('bri-dd-mobile').setAttribute('required', "true")
+        document.getElementById('bri-dd-mobile').setAttribute('name', "mobile_num")
         document.getElementById('bri-dd-email').setAttribute('required', "true")
         document.getElementById('bri-dd-card').setAttribute('required', "true")
     }

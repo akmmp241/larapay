@@ -16,8 +16,7 @@ return new class extends Migration
             $table->string("xendit_api_key", 200)->nullable();
             $table->string("xendit_webhook_token", 200)->nullable();
             $table->json("default_payment_method")->nullable();
-            $table->string("payment_success_redirect_url", 200)->nullable();
-            $table->string("payment_failed_redirect_url", 200)->nullable();
+            $table->json("default_redirect_url")->nullable();
         });
     }
 

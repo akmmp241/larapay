@@ -51,8 +51,8 @@ class SettingsController extends Controller
 
     public function setRedirect(): View
     {
-        $successUrl = Setting::successRedirectUrl();
-        $failedUrl = Setting::failedRedirectUrl();
+        $successUrl = Setting::defaultRedirectUrl()["success"];
+        $failedUrl = Setting::defaultRedirectUrl()["failure"];
         return view('settings.set-default-redirect', compact('successUrl', 'failedUrl'));
     }
 
@@ -60,9 +60,13 @@ class SettingsController extends Controller
     {
         $request->validated();
 
+        $data = [
+            "success" => $request->get('success_url'),
+            "failure" => $request->get('failed_url')
+        ];
+
         Setting::query()->first()->update([
-            "payment_success_redirect_url" => $request->get('success_url'),
-            "payment_failed_redirect_url" => $request->get('failed_url')
+            "default_redirect_url" => $data
         ]);
 
         return Redirect::back()->with([

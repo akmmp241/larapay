@@ -114,7 +114,6 @@ class ChargeService
 
     private function ewalletPayload(array $requests, PaymentLink $paymentLink): array
     {
-
         return [
             "type" => PaymentMethodType::EWALLET,
             "reusability" => PaymentMethodReusability::ONE_TIME_USE,

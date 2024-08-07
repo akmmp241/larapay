@@ -45,7 +45,7 @@ class WebhookController extends Controller
         return Response::json(["message" => "OK"]);
     }
 
-    public function failed(Request $request)
+    public function failed(Request $request): JsonResponse
     {
         $data = new PaymentCallbackData($request->get('data'));
         $paymentMethodType = $data->getPaymentMethod()["type"];

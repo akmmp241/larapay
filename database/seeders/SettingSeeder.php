@@ -41,6 +41,10 @@ class SettingSeeder extends Seeder
                     "mandiri_dd" => true,
                 ],
                 "cc" => true,
+            ],
+            "default_redirect_url" => [
+                "success" => null,
+                "failure" => null,
             ]
         ]);
     }

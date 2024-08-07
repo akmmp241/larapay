@@ -2,7 +2,7 @@
     <label for="reference-id" class="form-label text-muted ">Nomor Handphone (required)</label>
     <div class="input-group has-validation">
         <span class="input-group-text">+62</span>
-        <input id="ovo-required" name="mobile_num" type="text" class="form-control" placeholder="851XXXXXXX">
+        <input id="ovo-required" type="text" class="form-control" placeholder="851XXXXXXX">
     </div>
     <div>
         <button id="back-ovo" type="button" class="btn btn-outline-primary m-4">Kembali</button>
@@ -12,6 +12,7 @@
                 document.getElementById('form-ovo').classList.add('visually-hidden')
                 document.getElementById('payment-methods').classList.remove('visually-hidden')
                 document.getElementById('ovo-required').removeAttribute('required')
+                document.getElementById('ovo-required').removeAttribute('name')
             }
         </script>
     </div>

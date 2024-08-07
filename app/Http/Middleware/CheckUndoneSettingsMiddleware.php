@@ -28,6 +28,6 @@ class CheckUndoneSettingsMiddleware
             }
         ];
         $checkUndone = array_merge($checkUndone, $assets, $progress);
-        return true ? $next($request) : ResponseFacades::view('undone-setting', $checkUndone);
+        return $checkUndone["isDone"] ? $next($request) : ResponseFacades::view('undone-setting', $checkUndone);
     }
 }
