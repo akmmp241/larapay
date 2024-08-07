@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Xendit\Configuration;
 use Xendit\PaymentMethod\DirectDebitChannelCode;
 use Xendit\PaymentMethod\EWalletChannelCode;
 use Xendit\PaymentMethod\PaymentMethodType;
@@ -35,6 +36,7 @@ class PaymentController extends Controller
 
     public function __construct()
     {
+        Configuration::setXenditKey(Setting::xenditApiKey());
         $this->chargeService = new ChargeService();
         $this->paymentRequestService = new PaymentRequestService();
     }

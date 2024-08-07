@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        Configuration::setXenditKey(Env::get('XENDIT_API_KEY'));
+        //
     }
 
     /**
