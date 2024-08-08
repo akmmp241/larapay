@@ -36,7 +36,7 @@
                                                    id="to_date">
                                         </div>
                                     </div>
-                                    <div class="d-flex gap-2 align-items-center">
+                                    <div class="d-flex gap-3 align-items-center">
                                         <div>
                                             <label for="status" class="form-label text-muted mb-0">Status</label>
                                             <select name="status" class="form-control form-select" id="status">
@@ -44,6 +44,10 @@
                                                 <option value="PENDING">Pending</option>
                                                 <option value="PAID">Paid</option>
                                             </select>
+                                        </div>
+                                        <div>
+                                            <label for="per_page" class="form-label text-muted mb-0">Per Page</label>
+                                            <input type="number" name="per_page" placeholder="default 10" class="col form-control">
                                         </div>
                                     </div>
                                 </div>

@@ -22,6 +22,7 @@ class GetPaymentLinksRequest extends FormRequest
             "status" => ["nullable", "string"],
             "search" => ["nullable", "string", "max:255"],
             "search_by" => ["nullable"],
+            "per_page" => ["nullable", "integer", "min:1"],
         ];
     }
 }
