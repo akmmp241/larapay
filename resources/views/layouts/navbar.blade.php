@@ -33,9 +33,9 @@
                     </li> <!--end::User Image--> <!--begin::Menu Body-->
                     <li class="user-footer">
                         <a href="{{ route('profile') }}" class="btn btn-default btn-flat">Profile</a>
-                        <a href="#" class="btn btn-default btn-flat float-end">Log out</a></li> <!--end::Menu Footer-->
+                        <a href="{{ route('logout') }}" class="btn btn-default btn-flat float-end">Log out</a></li> <!--end::Menu Footer-->
                 </ul>
             </li> <!--end::User Menu Dropdown-->
-        </ul> <!--end::End Navbar Links-->
+        </ul> <!--end::End Navbar Links-->-
     </div> <!--end::Container-->
 </nav> <!--end::Header--> <!--begin::Sidebar-->

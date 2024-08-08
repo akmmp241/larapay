@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Rules\DuplicateEmail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -125,5 +126,14 @@ class UserController extends Controller
         ]);
 
         return Redirect::back()->with(["success" => "Berhasil mengubah password!"]);
+    }
+
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        return Redirect::to(route('login'));
     }
 }

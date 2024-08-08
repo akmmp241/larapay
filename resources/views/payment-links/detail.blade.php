@@ -91,15 +91,23 @@
                     </div>
                     <div class="card-header">
                         <div class="row align-items-center">
-                            <h5 class="mb-0 col-3">Customer </h5>
+                            <h5 class="mb-0 col-3">Payer Name </h5>
                             <h5 class="mb-0 col-2">: </h5>
-                            <div class="mb-0 col">
-                                <ul style="list-style: none" class="mb-0">
-                                    <li>Name: {{ $paymentLink->payer_name ?? '-' }}</li>
-                                    <li>Email: {{ $paymentLink->payer_email ?? '-' }}</li>
-                                    <li>Phone: {{ $paymentLink->payer_mobile_num ?? '-' }}</li>
-                                </ul>
-                            </div>
+                            <h5 class="mb-0 col">{{ $paymentLink->payer_name ?? '-' }}</h5>
+                        </div>
+                    </div>
+                    <div class="card-header">
+                        <div class="row">
+                            <h5 class="mb-0 col-3">Payer email </h5>
+                            <h5 class="mb-0 col-2">: </h5>
+                            <h5 class="mb-0 col">{{ $paymentLink->payer_email ?? '-' }}</h5>
+                        </div>
+                    </div>
+                    <div class="card-header">
+                        <div class="row">
+                            <h5 class="mb-0 col-3">Payer phone </h5>
+                            <h5 class="mb-0 col-2">: </h5>
+                            <h5 class="mb-0 col">{{ $paymentLink->payer_mobile_num ?? '-' }}</h5>
                         </div>
                     </div>
                     <div class="card-header">

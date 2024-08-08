@@ -24,7 +24,6 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(function () {
 
     Route::controller(UserController::class)->group(function () {
-        // TODO: Implement Dashboard
         // Dashboard
         Route::get('/dashboard', 'dashboard')->name('dashboard');
 
@@ -42,6 +41,8 @@ Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(functio
         Route::get('/profile', 'profile')->name('profile');
         Route::put('/profile', 'updateProfile')->name('profile.update');
         Route::patch('/profile', 'updatePassword')->name('profile.password');
+
+        Route::get('/logout', 'logout')->name('logout');
     });
 
 
@@ -73,7 +74,6 @@ Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(functio
             Route::patch('/webhook', 'storeWebhook')->name('settings.webhook.store');
         });
 
-        // TODO
         Route::get('/payment-methods', 'setDefaultPaymentMethod')->name('settings.payment-methods');
         Route::patch('/payment-methods', 'updateDefaultPaymentMethod')->name('settings.payment-methods.update');
 
