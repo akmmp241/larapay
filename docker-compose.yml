@@ -1,0 +1,38 @@
+
+services:
+    web-server:
+        image: nginx:latest
+        container_name: web-server
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "1020:80"
+        volumes:
+            - ./:/var/www/web
+            - ./nginx/conf.d:/etc/nginx/conf.d
+        links:
+            - php
+        networks:
+            - laravel_docker-net
+
+    php:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        image: php:8.3-fpm
+        container_name: php_docker
+        restart: unless-stopped
+        working_dir: /var/www/web
+        tty: true
+        environment:
+            SERVICE_NAME: php
+            SERVICE_TAGS: dev
+        volumes:
+            - ./:/var/www/web
+            - ./php/local.ini:/usr/local/php/etc/php/conf.d/local.ini
+        networks:
+            - laravel_docker-net
+
+networks:
+    laravel_docker-net:
+        driver: bridge
