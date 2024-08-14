@@ -13,6 +13,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
@@ -20,35 +21,75 @@ class UserController extends Controller
 {
     public function dashboard(): View
     {
-
         $latestPaymentLinks = PaymentLink::query()->latest('created_at')->take(5)->get();
 
-        $queryInit = DB::table('payment_links');
-
         $query = match (DB::getDriverName()) {
-            'mysql' => $queryInit->selectRaw("DATE_FORMAT(created_at, '%M') as Month), SUM(amount) as total"),
-            'sqlite' => $queryInit->selectRaw("CASE strftime('%m', created_at)
-        WHEN '01' THEN 'January'
-        WHEN '02' THEN 'February'
-        WHEN '03' THEN 'March'
-        WHEN '04' THEN 'April'
-        WHEN '05' THEN 'May'
-        WHEN '06' THEN 'June'
-        WHEN '07' THEN 'July'
-        WHEN '08' THEN 'August'
-        WHEN '09' THEN 'September'
-        WHEN '10' THEN 'October'
-        WHEN '11' THEN 'November'
-        WHEN '12' THEN 'December'
-        END || ' ' || strftime('%Y', created_at) AS month,
-    SUM(amount) as total"),
+            'mysql' => DB::table('payment_links')->selectRaw("DATE_FORMAT(paid_at, '%M') as Month), SUM(amount) as total"),
+            'sqlite' => DB::table('payment_links')->selectRaw("CASE strftime('%m', paid_at)
+                    WHEN '01' THEN 'January'
+                    WHEN '02' THEN 'February'
+                    WHEN '03' THEN 'March'
+                    WHEN '04' THEN 'April'
+                    WHEN '05' THEN 'May'
+                    WHEN '06' THEN 'June'
+                    WHEN '07' THEN 'July'
+                    WHEN '08' THEN 'August'
+                    WHEN '09' THEN 'September'
+                    WHEN '10' THEN 'October'
+                    WHEN '11' THEN 'November'
+                    WHEN '12' THEN 'December'
+                    END || ' ' || strftime('%Y', paid_at) AS month,
+                    SUM(amount) as total"),
         };
 
-        $incomeByMonth = $query->groupBy('Month')
-            ->orderBy('month')
+        $incomeByMonth = $query->where('status', 'PAID')
+            ->groupBy('Month')
+            ->orderBy('Month', 'DESC')
             ->get();
 
-        return view('dashboard', compact('latestPaymentLinks', 'incomeByMonth'));
+        $query = match (DB::getDriverName()) {
+            'mysql' => DB::table('payment_links')->selectRaw("DATE_FORMAT(created_at, '%M') as Month), SUM(amount) as total"),
+            'sqlite' => DB::table('payment_links')->selectRaw("CASE strftime('%m', created_at)
+                    WHEN '01' THEN 'January'
+                    WHEN '02' THEN 'February'
+                    WHEN '03' THEN 'March'
+                    WHEN '04' THEN 'April'
+                    WHEN '05' THEN 'May'
+                    WHEN '06' THEN 'June'
+                    WHEN '07' THEN 'July'
+                    WHEN '08' THEN 'August'
+                    WHEN '09' THEN 'September'
+                    WHEN '10' THEN 'October'
+                    WHEN '11' THEN 'November'
+                    WHEN '12' THEN 'December'
+                    END || ' ' || strftime('%Y', paid_at) AS month,
+                    SUM(amount) as total")
+        };
+
+        $pendingIncome = $query->where('status', 'PENDING')
+            ->groupBy('Month')
+            ->orderBy('Month', 'DESC')
+            ->get();
+
+        $todayIncome = DB::table('payment_links')->selectRaw("DATETIME(paid_at) as tanggal, SUM(amount) as total")
+            ->where("tanggal", "!=", null)
+            ->whereDate("tanggal", "=", Date::today())
+            ->groupBy("tanggal")
+            ->orderBy("tanggal")->first();
+
+        $thisWeekIncome = DB::table('payment_links')->selectRaw("DATE(paid_at) as tanggal, SUM(amount) as total")
+            ->where("tanggal", "!=", null)
+            ->whereDate("tanggal", ">=", Date::now()->subWeek())->first();
+
+        $pendingTransaction = DB::table('payment_links')->where('status', 'PENDING')->count();
+
+        $expireToday = DB::table('payment_links')
+            ->where('status', 'PENDING')
+            ->whereBetween(DB::raw('DATE(expire_date)'), [DB::raw("DATE('now')"), DB::raw("DATE('now', '+1 days')")])->count();
+
+        return view('dashboard',
+            compact('latestPaymentLinks',
+                'incomeByMonth', 'todayIncome', 'thisWeekIncome', 'pendingTransaction', 'expireToday', 'pendingIncome'));
     }
 
     public function profile(): View

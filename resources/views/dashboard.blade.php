@@ -6,16 +6,20 @@
     <main class="app-main">
         <div class="app-content-header">
             <div class="container-fluid">
-                <h1 class="text-center">Selamat datang Akmal</h1>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h3 class="mb-0">Dashboard</h3>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="app-content">
             <div class="container-fluid mb-5">
                 <div class="row justify-content-between">
-                    <div class="col-6 connectedSortable">
-                        <div class="card mb-4">
+                    <div class="col-6">
+                        <div class="card mb-4" id="chart" style="min-height: 400px">
                             <div class="card-header">
-                                <h3 class="card-title">Sales Value</h3>
+                                <h3 class="card-title">Money in</h3>
                             </div>
                             <div class="card-body">
                                 <div id="money-in-chart"></div>
@@ -23,12 +27,12 @@
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="card mb-4">
+                        <div class="card mb-4" id="table" style="min-height: 400px">
                             <div class="card-header">
                                 <h3 class="card-title">5 Latest Payment Links</h3>
                             </div>
-                            <div class="card-body">
-                                <table class="table table-bordered">
+                            <div class="card-body p-0">
+                                <table class="table">
                                     <thead>
                                     <tr>
                                         <th>Status</th>
@@ -62,10 +66,34 @@
             <div class="container-fluid mb-5">
                 <div class="row justify-content-between">
                     <div class="col-lg-3 col-6">
-                        <div class="small-box text-bg-success">
+                        <div class="small-box px-2 text-bg-success">
                             <div class="inner">
-                                <h3>Rp. 1.000.000.000</h3>
-                                <p>Uang Masuk hari ini</p>
+                                <h3 id="today-income">{{ $todayIncome->total ?? 0 }}</h3>
+                                <p>Uang Masuk hari ini (telah terbayar)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box px-2 text-bg-primary">
+                            <div class="inner">
+                                <h3 id="this-week-income">{{ $thisWeekIncome->total ?? 0 }}</h3>
+                                <p>Uang Masuk minggu ini (telah terbayar)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box px-2 text-bg-warning">
+                            <div class="inner">
+                                <h3 id="">{{ $pendingTransaction }}</h3>
+                                <p>Jumlah transaksi pending</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box px-2 text-bg-danger">
+                            <div class="inner">
+                                <h3 id="">{{ $expireToday ?? 0 }}</h3>
+                                <p>Jumlah transaksi yang akan expire hari ini</p>
                             </div>
                         </div>
                     </div>
@@ -85,6 +113,11 @@
                 }).format(number);
             }
 
+            const todayIncome = document.getElementById('today-income')
+            todayIncome.innerText = formatRP(todayIncome.innerText)
+
+            const thisWeekIncome = document.getElementById('this-week-income')
+            thisWeekIncome.innerText = formatRP(thisWeekIncome.innerText)
 
             document.querySelectorAll('.amount').forEach(val => {
                 val.innerText = formatRP(val.innerText)
@@ -95,22 +128,27 @@
                     name: "Money in",
                     data: [
                         @foreach($incomeByMonth as $income)
-                                {{ $income->total . "," }}
-                                @endforeach
+                            {{ $income->total . "," }}
+                        @endforeach
+                    ]
+                }, {
+                    name: "Pending money",
+                    data: [
+                        @foreach($pendingIncome as $income)
+                            {{ $income->total . "," }}
+                        @endforeach
                     ]
                 }],
                 chart: {
                     height: 300,
-                    type: 'line',
-                    zoom: {
-                        enabled: false
-                    }
+                    type: 'area',
+                    toolbar: false
                 },
                 dataLabels: {
                     enabled: false,
                 },
                 stroke: {
-                    curve: 'straight'
+                    curve: 'smooth'
                 },
                 title: {
                     text: 'Money in by months',
@@ -124,9 +162,15 @@
                 },
                 xaxis: {
                     categories: [
-                        @foreach($incomeByMonth as $income)
-                            "{{ $income->month , }}",
-                        @endforeach
+                        @if(sizeof($incomeByMonth) > sizeof($pendingIncome))
+                            @foreach($incomeByMonth as $income)
+                                "{{ $income->month , }}",
+                            @endforeach
+                        @else
+                            @foreach($pendingIncome as $income)
+                                "{{ $income->month , }}",
+                            @endforeach
+                        @endif
                     ]
                 },
                 yaxis: {
