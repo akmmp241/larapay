@@ -40,6 +40,13 @@ class Setting extends Model
         return self::xenditMode() === $mode;
     }
 
+    public static function setMode(string $mode): void
+    {
+        self::query()->first()->update([
+            "xendit_mode" => $mode
+        ]);
+    }
+
     public static function xenditApiKey(): ?string
     {
         return self::query()->first()->xendit_api_key;

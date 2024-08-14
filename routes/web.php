@@ -5,7 +5,6 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebhookController;
-use App\Http\Middleware\CheckExpiredPaymentMiddleware;
 use App\Http\Middleware\CheckUndoneSettingsMiddleware;
 use App\Http\Middleware\XenditWebhookMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -65,6 +64,8 @@ Route::middleware(['auth', CheckUndoneSettingsMiddleware::class])->group(functio
     // Settings routes
     Route::prefix('/settings')->withoutMiddleware([CheckUndoneSettingsMiddleware::class])->controller(SettingsController::class)->group(function () {
         Route::get('/', 'settings');
+
+        Route::patch('/mode', 'updateMode')->name('settings.mode');
 
         Route::prefix('/xendit')->group(function () {
             Route::get('/api-key', 'setApiKey')->name('settings.api-key');

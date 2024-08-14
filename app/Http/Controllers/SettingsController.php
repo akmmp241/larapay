@@ -122,4 +122,12 @@ class SettingsController extends Controller
 
         return Redirect::back()->with(["success" => "Success change your default payment method!"]);
     }
+
+    public function updateMode(Request $request): RedirectResponse
+    {
+        $currentMode = Setting::xenditMode();
+        if ($currentMode === Setting::$SANDBOX) Setting::setMode(Setting::$LIVE);
+        if ($currentMode === Setting::$LIVE) Setting::setMode(Setting::$SANDBOX);
+        return Redirect::back();
+    }
 }
