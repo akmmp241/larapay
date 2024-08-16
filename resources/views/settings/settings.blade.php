@@ -1,62 +1,53 @@
 @extends('layouts.master')
 
 @section('content')
-    <main class="app-main p-4">
+    <main class="app-main">
         <div class="app-content-header">
-            <h1>Settings</h1>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h3 class="mb-0">Settings</h3>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="app-content">
-            <div class="mb-5">
-                <a href="/settings/payment-methods" style="text-decoration: none; color: black">
-                    <div class="col-4"> <!-- small box -->
-                        <div class="small-box p-3 border border-dark border-2 d-flex align-items-center justify-content-between">
-                            <div class="inner">
-                                <h3>Default Payment Methods</h3>
-                                <p class="mb-0">Set activated payment methods by default in your payment link</p>
-                            </div>
-                            <img src="{{asset("assets/arrow-right.png")}}" width="24" height="24" alt="default payment methods">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-2" style="min-height: 100vh;"> <!--begin::Sidebar Brand-->
+                        <div class="sidebar-wrapper bg-secondary p-0 h-75">
+                            <nav class="pt-2">
+                                <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu"
+                                    data-accordion="false">
+                                    <li class="nav-item @if(request()->url() === route('settings.payment-methods')) bg-white border-start border-5 border-secondary @endif">
+                                        <a href="{{ route('settings.payment-methods') }}"
+                                           class="nav-link py-3 m-0 rounded-0 @if(request()->url() === route('settings.payment-methods')) text-black @else text-white @endif">
+                                            <p>Default Payment Methods</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item @if(request()->url() === route('settings.api-key')) bg-white border-start border-5 border-secondary @endif">
+                                        <a href="{{ route('settings.api-key') }}"
+                                           class="nav-link py-3 m-0 rounded-0 @if(request()->url() === route('settings.api-key')) text-black @else text-white @endif">
+                                            <p>Xendit API Key</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item @if(request()->url() === route('settings.webhook')) bg-white border-start border-5 border-secondary @endif">
+                                        <a href="{{ route('settings.webhook') }}" class="nav-link py-3 m-0 rounded-0 @if(request()->url() === route('settings.webhook')) text-black @else text-white @endif">
+                                            <p>Webhook</p>
+                                        </a></li>
+                                    <li class="nav-item @if(request()->url() === route('settings.redirect')) bg-white border-start border-5 border-secondary @endif">
+                                        <a href="{{ route('settings.redirect') }}" class="nav-link py-3 m-0 rounded-0 @if(request()->url() === route('settings.redirect')) text-black @else text-white @endif">
+                                            <p>Default Redirect</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
-                    </div> <!-- ./col -->
-                </a>
-            </div>
-            <div class="mb-5">
-                <a href="/settings/xendit/api-key" style="text-decoration: none; color: black">
-                    <div class="col-4"> <!-- small box -->
-                        <div class="small-box p-3 border border-dark border-2 d-flex align-items-center justify-content-between">
-                            <div class="inner">
-                                <h3>Xendit API Key</h3>
-                                <p class="mb-0">Set your API key for integration with Xendit</p>
-                            </div>
-                            <img src="{{asset("assets/arrow-right.png")}}" width="24" height="24" alt="default payment methods">
-                        </div>
-                    </div> <!-- ./col -->
-                </a>
-            </div>
-            <div class="mb-5">
-                <a href="/settings/xendit/webhook" style="text-decoration: none; color: black">
-                    <div class="col-4"> <!-- small box -->
-                        <div class="small-box p-3 border border-dark border-2 d-flex align-items-center justify-content-between">
-                            <div class="inner">
-                                <h3>Webhook Token</h3>
-                                <p class="mb-0">Set the webhook token for security</p>
-                            </div>
-                            <img src="{{asset("assets/arrow-right.png")}}" width="24" height="24" alt="default payment methods">
-                        </div>
-                    </div> <!-- ./col -->
-                </a>
-            </div>
-            <div class="mb-5">
-                <a href="/settings/redirect" style="text-decoration: none; color: black">
-                    <div class="col-4"> <!-- small box -->
-                        <div class="small-box p-3 border border-dark border-2 d-flex align-items-center justify-content-between">
-                            <div class="inner">
-                                <h3>Default Redirect</h3>
-                                <p class="mb-0">Set the default redirect after payment success/failed</p>
-                            </div>
-                            <img src="{{asset("assets/arrow-right.png")}}" width="24" height="24" alt="default payment methods">
-                        </div>
-                    </div> <!-- ./col -->
-                </a>
+                    </div>
+                    <div class="col" style="min-height: 100vh;">
+                        @yield('setting-content')
+                    </div>
+                </div>
             </div>
         </div>
     </main>

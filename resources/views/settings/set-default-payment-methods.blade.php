@@ -1,27 +1,27 @@
-@extends('layouts.master')
+@extends('settings.settings')
 
-@section('content')
-    <main class="app-main p-4">
-        <div class="app-content-header">
-            <h1>Set Xendit API Key</h1>
-            <p>Set the activated payment methods by default in your payment links</p>
+@section('setting-content')
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="col d-flex flex-column justify-content-between">
+                <h1>Set Xendit API Key</h1>
+                <p>Set the activated payment methods by default in your payment links</p>
+            </div>
         </div>
-        <div class="app-content">
-            <form action="{{ route('settings.payment-methods.update') }}" method="post">
+        <div class="card-body">
+            <form class="row" action="{{ route('settings.payment-methods.update') }}" method="post">
                 @method('PATCH')
                 @csrf
-                @include('component.alert-success')
-                <button type="submit" name="submit" class="col-1 btn btn-primary mb-3">Save</button>
-                <div class="accordion col-5 border border-3" id="accordionExample">
+                <div class="accordion col-5" id="accordionExample">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="panelsStayOpen-headingEwallet">
-                            <button class="accordion-button fw-bolder" type="button" data-bs-toggle="collapse"
+                            <button class="accordion-button fw-bolder collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#panelsStayOpen-collapseEwallet" aria-expanded="true"
                                     aria-controls="panelsStayOpen-collapseEwallet">
                                 EWallet
                             </button>
                         </h2>
-                        <div id="panelsStayOpen-collapseEwallet" class="accordion-collapse collapse show"
+                        <div id="panelsStayOpen-collapseEwallet" class="accordion-collapse collapse"
                              aria-labelledby="panelsStayOpen-headingEwallet">
                             <div class="accordion-body">
                                 <div class="mb-3">
@@ -51,13 +51,13 @@
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="panelsStayOpen-headingVA">
-                            <button class="accordion-button fw-bolder" type="button" data-bs-toggle="collapse"
+                            <button class="accordion-button fw-bolder collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#panelsStayOpen-collapseVA" aria-expanded="true"
                                     aria-controls="panelsStayOpen-collapseVA">
                                 Virtual Account
                             </button>
                         </h2>
-                        <div id="panelsStayOpen-collapseVA" class="accordion-collapse collapse show"
+                        <div id="panelsStayOpen-collapseVA" class="accordion-collapse collapse"
                              aria-labelledby="panelsStayOpen-headingVA">
                             <div class="accordion-body">
                                 <div class="mb-3">
@@ -119,13 +119,13 @@
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="panelsStayOpen-headingOTC">
-                            <button class="accordion-button fw-bolder" type="button" data-bs-toggle="collapse"
+                            <button class="accordion-button fw-bolder collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#panelsStayOpen-collapseOTC" aria-expanded="true"
                                     aria-controls="panelsStayOpen-collapseOTC">
                                 Over The Counter
                             </button>
                         </h2>
-                        <div id="panelsStayOpen-collapseOTC" class="accordion-collapse collapse show"
+                        <div id="panelsStayOpen-collapseOTC" class="accordion-collapse collapse"
                              aria-labelledby="panelsStayOpen-headingOTC">
                             <div class="accordion-body">
                                 <div class="mb-3">
@@ -147,13 +147,13 @@
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="panelsStayOpen-headingQR">
-                            <button class="accordion-button fw-bolder" type="button" data-bs-toggle="collapse"
+                            <button class="accordion-button fw-bolder collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#panelsStayOpen-collapseQR" aria-expanded="true"
                                     aria-controls="panelsStayOpen-collapseQR">
                                 QRCode (QRIS)
                             </button>
                         </h2>
-                        <div id="panelsStayOpen-collapseQR" class="accordion-collapse collapse show"
+                        <div id="panelsStayOpen-collapseQR" class="accordion-collapse collapse"
                              aria-labelledby="panelsStayOpen-headingQR">
                             <div class="accordion-body">
                                 <div class="mb-3">
@@ -168,13 +168,13 @@
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="panelsStayOpen-headingDD">
-                            <button class="accordion-button fw-bolder" type="button" data-bs-toggle="collapse"
+                            <button class="accordion-button fw-bolder collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#panelsStayOpen-collapseDD" aria-expanded="true"
                                     aria-controls="panelsStayOpen-collapseDD">
                                 Direct Debit
                             </button>
                         </h2>
-                        <div id="panelsStayOpen-collapseDD" class="accordion-collapse collapse show"
+                        <div id="panelsStayOpen-collapseDD" class="accordion-collapse collapse"
                              aria-labelledby="panelsStayOpen-headingDD">
                             <div class="accordion-body">
                                 <div class="mb-3">
@@ -196,13 +196,13 @@
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="panelsStayOpen-headingCC">
-                            <button class="accordion-button fw-bolder" type="button" data-bs-toggle="collapse"
+                            <button class="accordion-button fw-bolder collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#panelsStayOpen-collapseCC" aria-expanded="true"
                                     aria-controls="panelsStayOpen-collapseCC">
                                 Credit Card
                             </button>
                         </h2>
-                        <div id="panelsStayOpen-collapseCC" class="accordion-collapse collapse show"
+                        <div id="panelsStayOpen-collapseCC" class="accordion-collapse collapse"
                              aria-labelledby="panelsStayOpen-headingCC">
                             <div class="accordion-body">
                                 <div class="mb-3">
@@ -215,7 +215,10 @@
                         </div>
                     </div>
                 </div>
+                <button type="submit" name="submit" class="col-1 btn btn-primary mb-3" style="height: fit-content">Save
+                </button>
             </form>
         </div>
-    </main>
+    </div>
+    @include('component.alert-success')
 @endsection
