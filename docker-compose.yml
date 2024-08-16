@@ -1,4 +1,3 @@
-
 services:
     web-server:
         image: nginx:latest
@@ -8,7 +7,7 @@ services:
         ports:
             - "1020:80"
         volumes:
-            - ./:/var/www/web
+            - larapay_source:/var/www/web
             - ./nginx/conf.d:/etc/nginx/conf.d
         links:
             - php
@@ -19,7 +18,6 @@ services:
         build:
             context: ./
             dockerfile: Dockerfile
-        image: php:8.3-fpm
         container_name: php_docker
         restart: unless-stopped
         working_dir: /var/www/web
@@ -28,10 +26,14 @@ services:
             SERVICE_NAME: php
             SERVICE_TAGS: dev
         volumes:
-            - ./:/var/www/web
+            - larapay_source:/var/www/web
             - ./php/local.ini:/usr/local/php/etc/php/conf.d/local.ini
         networks:
             - laravel_docker-net
+
+volumes:
+    larapay_source:
+        name: larapay_source
 
 networks:
     laravel_docker-net:
