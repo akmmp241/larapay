@@ -4,8 +4,6 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use App\Models\User;
-use Filament\Actions;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -14,6 +12,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateUser extends CreateRecord
 {
     protected static string $resource = UserResource::class;
+    protected ?string $heading = "Create New User";
+    protected static ?string $breadcrumb = "New";
 
     protected static bool $canCreateAnother = false;
 
@@ -25,18 +25,23 @@ class CreateUser extends CreateRecord
         ]);
     }
 
+    protected function getCreatedNotificationTitle(): ?string
+    {
+        return "Successfully Created User";
+    }
+
     public function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('first_name')
                     ->label('First Name')
-                    ->alpha()
+                    ->string()
                     ->maxLength(255)
                     ->required(),
                 TextInput::make('last_name')
                     ->label('Last Name')
-                    ->alpha()
+                    ->string()
                     ->maxLength(255),
                 TextInput::make('email')
                     ->label('Email')
@@ -50,22 +55,20 @@ class CreateUser extends CreateRecord
                         User::$ADMIN => 'Admin',
                         User::$MEMBER => 'Member',
                     ]),
-                TextInput::make('address'),
+                TextInput::make('address')
+                    ->maxLength(255),
                 TextInput::make('mobile_number')
                     ->label('Mobile Number')
                     ->numeric()
+                    ->maxLength(255)
                     ->prefix('+62'),
                 TextInput::make('password')
                     ->label('Initial Password')
                     ->password()
                     ->minValue(8)
+                    ->maxLength(255)
                     ->revealable()
-                    ->columnSpan('full'),
-                FileUpload::make('profile_pic')
                     ->columnSpan('full')
-                    ->directory('profile_pics')
-                    ->label('Profile Picture')
-                    ->image()
             ]);
     }
 }

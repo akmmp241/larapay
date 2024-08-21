@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
@@ -26,7 +25,7 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
+
             ]);
     }
 
@@ -36,6 +35,10 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('first_name')
                     ->label('Name')
+                    ->description(fn (User $record) => match ($record->id) {
+                        Auth::id() => "This is you",
+                        default => ""
+                    })
                     ->state(fn(User $record) => $record->fullName())
                     ->disabledClick()
                     ->searchable(),
@@ -74,6 +77,10 @@ class UserResource extends Resource
                     ->url(fn(User $record) => match ($record->id) {
                         Auth::id() => route('filament.admin.auth.profile'),
                         default => route('filament.admin.resources.users.edit', $record),
+                    })
+                    ->label(function (User $record) {
+                        if ($record->id === Auth::id()) return __("Go To Profile");
+                        return __("Edit");
                     })
             ])
             ->bulkActions([
