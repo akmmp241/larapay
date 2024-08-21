@@ -3,6 +3,7 @@
 namespace App\Filament\Pages\Auth;
 
 use Filament\Actions\Action;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -23,6 +24,16 @@ class EditProfile extends BaseEditProfile
     {
         return $form
             ->schema([
+                Section::make('')->schema([
+                    FileUpload::make('profile_pic')
+                        ->columnSpan('full')
+                        ->label('Profile Picture')
+                        ->image()
+                        ->avatar()
+                        ->imageEditor()
+                        ->disk('public')
+                        ->directory('profile_pics'),
+                ]),
                 Section::make('User Information')->schema([
                     TextInput::make('email')
                         ->label('Email')

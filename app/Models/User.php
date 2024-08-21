@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements FilamentUser, HasName
+class User extends Authenticatable implements FilamentUser, HasName, HasAvatar
 {
     use HasFactory, Notifiable;
 
@@ -53,6 +54,10 @@ class User extends Authenticatable implements FilamentUser, HasName
         ];
     }
 
+    public function fullName(): string
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 
     public function canAccessPanel(Panel $panel): bool
     {
@@ -62,5 +67,10 @@ class User extends Authenticatable implements FilamentUser, HasName
     public function getFilamentName(): string
     {
         return $this->first_name . ' ' . $this->last_name;
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return asset('storage') . '/' . $this->profile_pic;
     }
 }
