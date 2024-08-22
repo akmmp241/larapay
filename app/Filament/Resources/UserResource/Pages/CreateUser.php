@@ -27,7 +27,7 @@ class CreateUser extends CreateRecord
 
     protected function getCreatedNotificationTitle(): ?string
     {
-        return "Successfully Created User";
+        return "Successfully created user";
     }
 
     public function form(Form $form): Form
@@ -68,7 +68,7 @@ class CreateUser extends CreateRecord
                     ->minValue(8)
                     ->maxLength(255)
                     ->revealable()
-                    ->columnSpan('full')
+                    ->columnSpanFull()
             ]);
     }
 }
